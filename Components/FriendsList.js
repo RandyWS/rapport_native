@@ -1,16 +1,15 @@
-import React from "react";
+import React from 'react';
+import {Text, Image, View} from 'react-native';
 
-export const FriendsList = (props) => {
+export const FriendsList = props => {
   const friend = props.friend;
 
   return (
-    <div className="column">
-      <img src={friend.imageUrl} />
-      <div className="row">
-        <h3>
-          Name: {friend.firstName} {friend.lastName}
-        </h3>
-      </div>
-    </div>
+    <View>
+      <Image source={{uri: friend.imageUrl}} />
+      <Text>
+        Name: {friend.firstName} {friend.lastName}
+      </Text>
+    </View>
   );
 };

@@ -1,11 +1,11 @@
 import {NativeRouter, Route, Link} from 'react-router-native';
 import {StyleSheet, Text, View, AppRegistry} from 'react-native';
-import SideMenu from 'react-native-side-menu';
+import Navbar from './Navbar';
 
 import axios from 'axios';
 import React, {useEffect} from 'react';
 import {connect} from 'react-redux';
-import Navbar from './Navbar';
+
 import Home from './Home';
 import Calendar from './Calendar';
 import UserPage from './UserPage';
@@ -26,9 +26,9 @@ const Routes = () => {
 
   return (
     <NativeRouter>
-      <SideMenu menu={menu}>
+      <Navbar>
         <Route exact path="/" component={Home} />
-        <Route exact path="/signup" component={SignUp} />
+        {/* <Route exact path="/signup" component={SignUp} />
         <Route exact path="/user/:userName" component={UserPage} />
         <Route exact path="/user/:userName/calendar" component={Calendar} />
         <Route exact path="/user/:userName/addMessage" component={NewContact} />
@@ -36,8 +36,8 @@ const Routes = () => {
           exact
           path="/user/:userName/:contactId"
           component={SingleContact}
-        />
-      </SideMenu>
+        /> */}
+      </Navbar>
     </NativeRouter>
   );
 };

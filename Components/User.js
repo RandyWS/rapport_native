@@ -1,22 +1,21 @@
-import React from "react";
+import React from 'react';
+import {Text, Image, View} from 'react-native';
 
-const User = (props) => {
+const User = props => {
   if (!props.user) {
     return null;
   }
 
   const user = props.user;
   return (
-    <div className="column">
-      <img src={user.imageUrl} />
-      <div className="row">
-        <h2>Username: {user.userName}</h2>
-        <h3>
-          Name: {user.firstName} {user.lastName}
-        </h3>
-        <h3>Email: {user.email}</h3>
-      </div>
-    </div>
+    <View>
+      <Image source={{uri: user.imageUrl}} />
+      <Text>Username: {user.userName}</Text>
+      <Text>
+        Name: {user.firstName} {user.lastName}
+      </Text>
+      <Text>Email: {user.email}</Text>
+    </View>
   );
 };
 

@@ -1,8 +1,11 @@
-import React from "react";
+import React from 'react';
+import {Text, View} from 'react-native';
 
-const Unauthorized = (props) => {
+const Unauthorized = props => {
   return (
-    <h1 className="helper-message">You may not have access to this page!</h1>
+    <View>
+      <Text>You may not have access to this page!</Text>
+    </View>
   );
 };
 
