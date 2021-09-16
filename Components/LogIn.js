@@ -3,7 +3,6 @@ import {
   StatusBar,
   StyleSheet,
   Text,
-  // Image,
   View,
   TextInput,
   TouchableOpacity,
@@ -33,16 +32,10 @@ class LogIn extends Component {
   }
   render() {
     const {onChange, onSubmit} = this;
-    const {username, password} = this.state;
-    return (
-      // <form onSubmit={onSubmit}>
-      //   <input value={username} onChange={onChange} name="username" />
-      //   <input value={password} onChange={onChange} name="password" />
-      //   <button>Sign In</button>
-      // </form>
 
+    return (
       <View style={styles.container}>
-        {/* <Image style={styles.image} source={require('./assets/log2.png')} /> */}
+        {/* Maybe put logo here? */}
 
         <StatusBar style="auto" />
         <View style={styles.inputView}>
@@ -66,6 +59,11 @@ class LogIn extends Component {
 
         <TouchableOpacity onPress={onSubmit} style={styles.loginBtn}>
           <Text style={styles.loginText}>LOGIN</Text>
+        </TouchableOpacity>
+
+        <Text>New User?</Text>
+        <TouchableOpacity onPress={onSubmit} style={styles.loginBtn}>
+          <Text style={styles.loginText}>Sign Up!</Text>
         </TouchableOpacity>
       </View>
     );

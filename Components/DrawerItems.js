@@ -1,11 +1,14 @@
 export default [
   {
-    name: 'LogIn',
-  },
-  {
     name: 'Profile',
   },
   {
     name: 'Calendar',
+  },
+  {
+    name: 'Manage Friends',
+  },
+  {
+    name: 'New Communication',
   },
 ];
