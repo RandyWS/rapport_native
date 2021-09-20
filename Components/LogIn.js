@@ -8,7 +8,7 @@ import {
   TouchableOpacity,
 } from 'react-native';
 import {connect} from 'react-redux';
-import {_logIn} from '../redux/loggedIn';
+import {_logIn} from '../Redux/loggedIn';
 
 class LogIn extends Component {
   constructor() {
@@ -82,7 +82,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: '#fff',
-    alignItems: 'center',
+    // alignItems: 'center',
     justifyContent: 'center',
   },
 
@@ -97,7 +97,7 @@ const styles = StyleSheet.create({
     height: 45,
     marginBottom: 20,
 
-    alignItems: 'center',
+    // alignItems: 'center',
   },
 
   TextInput: {

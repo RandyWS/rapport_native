@@ -6,107 +6,75 @@
  * @flow strict-local
  */
 
-import React from 'react';
-import type {Node} from 'react';
-import {
-  SafeAreaView,
-  ScrollView,
-  StatusBar,
-  StyleSheet,
-  Text,
-  useColorScheme,
-  View,
-} from 'react-native';
+/* eslint-disable react/no-did-update-set-state */
+import React, {Component} from 'react';
+import {SafeAreaView, Text} from 'react-native';
+import {createDrawerNavigator} from '@react-navigation/drawer';
+import {NavigationContainer} from '@react-navigation/native';
 
-import {
-  Colors,
-  DebugInstructions,
-  Header,
-  LearnMoreLinks,
-  ReloadInstructions,
-} from 'react-native/Libraries/NewAppScreen';
+// redux
+import {connect} from 'react-redux';
 
-const Section = ({children, title}): Node => {
-  const isDarkMode = useColorScheme() === 'dark';
-  return (
-    <View style={styles.sectionContainer}>
-      <Text
-        style={[
-          styles.sectionTitle,
-          {
-            color: isDarkMode ? Colors.white : Colors.black,
-          },
-        ]}>
-        {title}
-      </Text>
-      <Text
-        style={[
-          styles.sectionDescription,
-          {
-            color: isDarkMode ? Colors.light : Colors.dark,
-          },
-        ]}>
-        {children}
-      </Text>
-    </View>
-  );
-};
+// Components
+import LogIn from './Components/LogIn';
+import SignUp from './Components/SignUp';
+import DrawerItems from './Components/DrawerItems';
+import Header from './Components/Header';
+import Profile from './Components/Profile';
+import Calendar from './Components/Calendar';
+import NewCommunication from './Components/NewCommunication';
+import AddFriends from './Components/AddFriends';
 
-const App: () => Node = () => {
-  const isDarkMode = useColorScheme() === 'dark';
+const Drawer = createDrawerNavigator();
 
-  const backgroundStyle = {
-    backgroundColor: isDarkMode ? Colors.darker : Colors.lighter,
-  };
+class App extends Component {
+  constructor(props) {
+    super(props);
+  }
 
-  return (
-    <SafeAreaView style={backgroundStyle}>
-      <StatusBar barStyle={isDarkMode ? 'light-content' : 'dark-content'} />
-      <ScrollView
-        contentInsetAdjustmentBehavior="automatic"
-        style={backgroundStyle}>
-        <Header />
-        <View
-          style={{
-            backgroundColor: isDarkMode ? Colors.black : Colors.white,
+  render() {
+    return (
+      <NavigationContainer>
+        <Drawer.Navigator
+          drawerType="front"
+          initialRouteName="Profile"
+          screenOptions={{
+            activeTintColor: '#e91e63',
+            itemStyle: {marginVertical: 10},
           }}>
-          <Section title="Step One">
-            Edit <Text style={styles.highlight}>App.js</Text> to change this
-            screen and then come back to see your edits.
-          </Section>
-          <Section title="See Your Changes">
-            <ReloadInstructions />
-          </Section>
-          <Section title="Debug">
-            <DebugInstructions />
-          </Section>
-          <Section title="Learn More">
-            Read the docs to discover what to do next:
-          </Section>
-          <LearnMoreLinks />
-        </View>
-      </ScrollView>
-    </SafeAreaView>
-  );
-};
+          {DrawerItems.map(drawer => (
+            <Drawer.Screen
+              key={drawer.name}
+              name={drawer.name}
+              options={{
+                headerShown: true,
+                header: ({navigation, route, options}) => {
+                  const title =
+                    options.headerTitle !== undefined
+                      ? options.headerTitle
+                      : options.title !== undefined
+                      ? options.title
+                      : route.name;
+                  return <Header screen={title} />;
+                },
+              }}
+              component={
+                drawer.name === 'Profile'
+                  ? Profile
+                  : drawer.name === 'Calendar'
+                  ? Calendar
+                  : drawer.name === 'New Communication'
+                  ? NewCommunication
+                  : drawer.name === 'Add Friend'
+                  ? AddFriends
+                  : LogIn
+              }
+            />
+          ))}
+        </Drawer.Navigator>
+      </NavigationContainer>
+    );
+  }
+}
 
-const styles = StyleSheet.create({
-  sectionContainer: {
-    marginTop: 32,
-    paddingHorizontal: 24,
-  },
-  sectionTitle: {
-    fontSize: 24,
-    fontWeight: '600',
-  },
-  sectionDescription: {
-    marginTop: 8,
-    fontSize: 18,
-    fontWeight: '400',
-  },
-  highlight: {
-    fontWeight: '700',
-  },
-});
-
-export default App;
+export default connect(null, null)(App);

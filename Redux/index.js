@@ -1,11 +1,11 @@
-import { combineReducers } from "redux";
-import user from "./user";
-import loggedIn from "./loggedIn";
-import userFriends from "./userFriends";
-import contacts from "./contacts";
-import authMessage from "./authMessage";
-import singleContact from "./singleContact";
-import singleFriend from "./userSingleFriend";
+import {combineReducers} from 'redux';
+import user from './user';
+import loggedIn from './loggedIn';
+import userFriends from './userFriends';
+import contacts from './contacts';
+import authMessage from './authMessage';
+import singleContact from './singleContact';
+import singleFriend from './userSingleFriend';
 
 const appReducer = combineReducers({
   user,

@@ -1,11 +1,11 @@
-import axios from "axios";
-import { _fetchUser, setUser } from "./user";
-import { setUserFriends } from "./userFriends";
-import { setMessage } from "./authMessage";
+import axios from 'axios';
+import {_fetchUser, setUser} from './user';
+import {setUserFriends} from './userFriends';
+import {setMessage} from './authMessage';
 
-const SET_AUTH = "SET_AUTH";
+const SET_AUTH = 'SET_AUTH';
 
-export const setAuthentication = (authentication) => {
+export const setAuthentication = authentication => {
   return {
     type: SET_AUTH,
     authentication,
@@ -13,9 +13,9 @@ export const setAuthentication = (authentication) => {
 };
 
 export const _logIn = (credentials, history) => {
-  return async (dispatch) => {
+  return async dispatch => {
     try {
-      const { data } = await axios.post(`/api/user/login`, credentials);
+      const {data} = await axios.post(`/api/user/login`, credentials);
       dispatch(setAuthentication(data.loggedIn));
       dispatch(setMessage(data.message));
       if (data.loggedIn === true) {
@@ -30,9 +30,9 @@ export const _logIn = (credentials, history) => {
 };
 
 export const _logOut = () => {
-  return async (dispatch) => {
+  return async dispatch => {
     try {
-      const { data } = await axios.get("/api/user/logout");
+      const {data} = await axios.get('/api/user/logout');
       dispatch(setAuthentication(data.loggedIn));
       dispatch(setUser({}));
       dispatch(setUserFriends([]));
@@ -44,9 +44,9 @@ export const _logOut = () => {
 };
 
 export const authenticate = () => {
-  return async (dispatch) => {
+  return async dispatch => {
     try {
-      const { data } = await axios.get("/api/user/authenticated");
+      const {data} = await axios.get('/api/user/authenticated');
       dispatch(setAuthentication(data.loggedIn));
       dispatch(setMessage(data.message));
     } catch (error) {

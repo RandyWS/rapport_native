@@ -1,11 +1,11 @@
-import axios from "axios";
-import { setUserFriends } from "./userFriends";
-import { setAuthentication } from "./loggedIn";
-import { setMessage } from "./authMessage";
+import axios from 'axios';
+import {setUserFriends} from './userFriends';
+import {setAuthentication} from './loggedIn';
+import {setMessage} from './authMessage';
 
-const SET_USER = "SET_USER";
+const SET_USER = 'SET_USER';
 
-export const setUser = (user) => {
+export const setUser = user => {
   return {
     type: SET_USER,
     user,
@@ -15,9 +15,9 @@ export const setUser = (user) => {
 const routeToCalendar = () => {};
 
 export const _fetchUser = (username, history) => {
-  return async (dispatch) => {
+  return async dispatch => {
     try {
-      const { data } = await axios.get(`/api/user/authenticated/${username}`);
+      const {data} = await axios.get(`/api/user/authenticated/${username}`);
       dispatch(setAuthentication(data.loggedIn));
       dispatch(setMessage(data.message));
       if (data.user) {
@@ -31,9 +31,9 @@ export const _fetchUser = (username, history) => {
 };
 
 export const createUser = (newUser, history) => {
-  return async (dispatch) => {
+  return async dispatch => {
     try {
-      const { data } = await axios.post(`/api/user/signup`, newUser);
+      const {data} = await axios.post(`/api/user/signup`, newUser);
       dispatch(setUser(data.user));
       const path = `/user/${data.user.userName}`;
       history.push(path);

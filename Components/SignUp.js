@@ -1,15 +1,9 @@
 import React, {Component} from 'react';
-import {
-  Button,
-  StyleSheet,
-  Text,
-  View,
-  TextInput,
-  TouchableOpacity,
-  Link,
-} from 'react-native';
+import {Text, View, TextInput, TouchableOpacity, Link} from 'react-native';
+
+// Redux
 import {connect} from 'react-redux';
-import {createUser} from '../redux/user';
+import {createUser} from '../Redux/user';
 
 class SignUp extends Component {
   constructor(props) {

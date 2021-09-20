@@ -1,9 +1,9 @@
-import axios from "axios";
+import axios from 'axios';
 
-const SET_CONTACTS = "SET_CONTACTS";
-const RESET_CONTACTS = "RESET_CONTACTS";
+const SET_CONTACTS = 'SET_CONTACTS';
+const RESET_CONTACTS = 'RESET_CONTACTS';
 
-export const setContacts = (contacts) => {
+export const setContacts = contacts => {
   return {
     type: SET_CONTACTS,
     contacts,
@@ -17,11 +17,11 @@ export const resetContacts = () => {
   };
 };
 
-export const getContacts = (userId) => {
-  return async (dispatch) => {
+export const getContacts = userId => {
+  return async dispatch => {
     try {
-      const { data } = await axios.get(
-        `/api/contacts/authenticated/byUserId/${userId}`
+      const {data} = await axios.get(
+        `/api/contacts/authenticated/byUserId/${userId}`,
       );
       dispatch(setContacts(data.contacts));
     } catch (error) {

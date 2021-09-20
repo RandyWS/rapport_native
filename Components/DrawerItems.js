@@ -1,14 +1,17 @@
 export default [
   {
+    name: 'Log In',
+  },
+  {
     name: 'Profile',
   },
   {
     name: 'Calendar',
   },
   {
-    name: 'Manage Friends',
+    name: 'New Communication',
   },
   {
-    name: 'New Communication',
+    name: 'Add Friend',
   },
 ];

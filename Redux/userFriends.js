@@ -1,8 +1,8 @@
-import axios from "axios";
+import axios from 'axios';
 
-const SET_USER_FRIENDS = "SET_USER_FRIENDS";
+const SET_USER_FRIENDS = 'SET_USER_FRIENDS';
 
-export const setUserFriends = (userFriends) => {
+export const setUserFriends = userFriends => {
   return {
     type: SET_USER_FRIENDS,
     userFriends,
