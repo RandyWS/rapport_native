@@ -1,4 +1,4 @@
-import React, {Component} from 'react';
+import React, {useState, Component} from 'react';
 import {
   StatusBar,
   StyleSheet,
@@ -10,65 +10,57 @@ import {
 import {connect} from 'react-redux';
 import {_logIn} from '../Redux/loggedIn';
 
-class LogIn extends Component {
-  constructor() {
-    super();
-    this.state = {
-      username: '',
-      password: '',
-    };
-    this.onChange = this.onChange.bind(this);
-    this.onSubmit = this.onSubmit.bind(this);
-  }
-  onChange(ev) {
-    this.setState({[ev.target.name]: ev.target.value});
-  }
-  onSubmit(ev) {
-    ev.preventDefault();
+const LogIn = props => {
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
 
-    this.props.logIn({
-      ...this.state,
-    });
-  }
-  render() {
-    const {onChange, onSubmit} = this;
+  const onSubmit = () => {
+    console.log('email', email);
+    console.log('password', password);
+    // this.props.logIn({
+    //   ...this.state,
+    // });
+  };
 
-    return (
-      <View style={styles.container}>
-        {/* Maybe put logo here? */}
+  return (
+    <View style={styles.container}>
+      {/* Maybe put logo here? */}
 
-        <StatusBar style="auto" />
-        <View style={styles.inputView}>
-          <TextInput
-            style={styles.TextInput}
-            placeholder="Email"
-            placeholderTextColor="#003f5c"
-            onChangeText={onChange}
-          />
-        </View>
-
-        <View style={styles.inputView}>
-          <TextInput
-            style={styles.TextInput}
-            placeholder="Password"
-            placeholderTextColor="#003f5c"
-            secureTextEntry={true}
-            onChangeText={onChange}
-          />
-        </View>
-
-        <TouchableOpacity onPress={onSubmit} style={styles.loginBtn}>
-          <Text style={styles.loginText}>LOGIN</Text>
-        </TouchableOpacity>
-
-        <Text>New User?</Text>
-        <TouchableOpacity onPress={onSubmit} style={styles.loginBtn}>
-          <Text style={styles.loginText}>Sign Up!</Text>
-        </TouchableOpacity>
+      <StatusBar style="auto" />
+      <View style={styles.inputView}>
+        <TextInput
+          style={styles.TextInput}
+          placeholder="Email"
+          placeholderTextColor="#003f5c"
+          onChangeText={email => setEmail(email)}
+        />
       </View>
-    );
-  }
-}
+
+      <View style={styles.inputView}>
+        <TextInput
+          style={styles.TextInput}
+          placeholder="Password"
+          placeholderTextColor="#003f5c"
+          secureTextEntry={true}
+          onChangeText={password => setPassword(password)}
+        />
+      </View>
+
+      <TouchableOpacity>
+        <Text style={styles.forgot_button}>Forgot Password?</Text>
+      </TouchableOpacity>
+
+      <TouchableOpacity onPress={onSubmit} style={styles.loginBtn}>
+        <Text style={styles.loginText}>LOG IN</Text>
+      </TouchableOpacity>
+
+      <Text>New User?</Text>
+      <TouchableOpacity onPress={onSubmit} style={styles.loginBtn}>
+        <Text style={styles.loginText}>Sign Up!</Text>
+      </TouchableOpacity>
+    </View>
+  );
+};
 
 const mapDispatchToProps = (dispatch, {history}) => {
   return {
@@ -82,8 +74,9 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: '#fff',
-    // alignItems: 'center',
+    alignItems: 'center',
     justifyContent: 'center',
+    marginTop: 50,
   },
 
   image: {
@@ -105,6 +98,7 @@ const styles = StyleSheet.create({
     flex: 1,
     padding: 10,
     marginLeft: 20,
+    alignItems: 'center',
   },
 
   loginBtn: {
@@ -113,7 +107,13 @@ const styles = StyleSheet.create({
     height: 50,
     alignItems: 'center',
     justifyContent: 'center',
-    marginTop: 40,
+    marginTop: 10,
+    marginBottom: 10,
     backgroundColor: '#FF1493',
+  },
+
+  forgot_button: {
+    height: 30,
+    marginBottom: 30,
   },
 });

@@ -21,7 +21,7 @@ import SignUp from './Components/SignUp';
 import DrawerItems from './Components/DrawerItems';
 import Header from './Components/Header';
 import Profile from './Components/Profile';
-import Calendar from './Components/Calendar';
+import RapportCalendar from './Components/Calendar';
 import NewCommunication from './Components/NewCommunication';
 import AddFriends from './Components/AddFriends';
 
@@ -62,12 +62,14 @@ class App extends Component {
                 drawer.name === 'Profile'
                   ? Profile
                   : drawer.name === 'Calendar'
-                  ? Calendar
-                  : drawer.name === 'New Communication'
+                  ? RapportCalendar
+                  : drawer.name === 'Rapport'
                   ? NewCommunication
-                  : drawer.name === 'Add Friend'
+                  : drawer.name === 'Friends'
                   ? AddFriends
-                  : LogIn
+                  : drawer.name === 'Log In'
+                  ? LogIn
+                  : SignUp
               }
             />
           ))}

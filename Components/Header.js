@@ -19,7 +19,7 @@ export default function Header({screen}) {
 const headerStyles = StyleSheet.create({
   container: {
     position: 'absolute',
-    top: 30,
+    top: 32,
     left: 0,
     width: '100%',
     backgroundColor: '#fa7da7',

@@ -3,15 +3,18 @@ export default [
     name: 'Log In',
   },
   {
+    name: 'Sign Up',
+  },
+  {
     name: 'Profile',
   },
   {
     name: 'Calendar',
   },
   {
-    name: 'New Communication',
+    name: 'Rapport',
   },
   {
-    name: 'Add Friend',
+    name: 'Friends',
   },
 ];

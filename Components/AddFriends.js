@@ -1,20 +1,125 @@
-import React, {Component} from 'react';
-import {Text, View} from 'react-native';
-
+import React, {useState, Component} from 'react';
+import {
+  StatusBar,
+  StyleSheet,
+  Text,
+  View,
+  TextInput,
+  TouchableOpacity,
+} from 'react-native';
 import {connect} from 'react-redux';
 
-class AddFriends extends Component {
-  constructor() {
-    super();
-  }
+const AddFriends = () => {
+  const [nickname, setNickname] = useState('');
+  const [firstName, setFirstName] = useState('');
+  const [lastName, setLastName] = useState('');
+  const [description, setDescription] = useState('');
+  const [imageUrl, setImageUrl] = useState('');
 
-  render() {
-    return (
-      <View style={{flex: 1, alignItems: 'center', justifyContent: 'center'}}>
-        <Text style={{fontSize: 16, fontWeight: '700'}}>Add Friend</Text>
+  const onSubmit = () => {
+    console.log(nickname, firstName, lastName, description, imageUrl);
+
+    // this.props.logIn({
+    //   ...this.state,
+    // });
+  };
+
+  return (
+    <View style={styles.container}>
+      <StatusBar style="auto" />
+      <View style={styles.inputView}>
+        <TextInput
+          style={styles.TextInput}
+          placeholder="Nickname"
+          placeholderTextColor="#003f5c"
+          onChangeText={nickname => setNickname(nickname)}
+        />
       </View>
-    );
-  }
-}
+
+      <View style={styles.inputView}>
+        <TextInput
+          style={styles.TextInput}
+          placeholder="First Name"
+          placeholderTextColor="#003f5c"
+          onChangeText={firstName => setFirstName(firstName)}
+        />
+      </View>
+
+      <View style={styles.inputView}>
+        <TextInput
+          style={styles.TextInput}
+          placeholder="Last Name"
+          placeholderTextColor="#003f5c"
+          onChangeText={lastName => setLastName(lastName)}
+        />
+      </View>
+
+      <View style={styles.inputView}>
+        <TextInput
+          style={styles.TextInput}
+          placeholder="Description"
+          placeholderTextColor="#003f5c"
+          onChangeText={description => setDescription(description)}
+        />
+      </View>
+
+      <Text style={{fontSize: 16, fontWeight: '700'}}>Upload an Image</Text>
+
+      <TouchableOpacity onPress={onSubmit} style={styles.loginBtn}>
+        <Text style={styles.loginText}>ADD FRIEND</Text>
+      </TouchableOpacity>
+
+      <Text>Cancel</Text>
+    </View>
+  );
+};
 
 export default connect(null, null)(AddFriends);
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    backgroundColor: '#fff',
+    alignItems: 'center',
+    justifyContent: 'center',
+    marginTop: 50,
+  },
+
+  image: {
+    marginBottom: 40,
+  },
+
+  inputView: {
+    backgroundColor: '#FFC0CB',
+    borderRadius: 30,
+    width: '70%',
+    height: 45,
+    marginBottom: 20,
+
+    // alignItems: 'center',
+  },
+
+  TextInput: {
+    height: 50,
+    flex: 1,
+    padding: 10,
+    marginLeft: 20,
+    alignItems: 'center',
+  },
+
+  loginBtn: {
+    width: '80%',
+    borderRadius: 25,
+    height: 50,
+    alignItems: 'center',
+    justifyContent: 'center',
+    marginTop: 10,
+    marginBottom: 10,
+    backgroundColor: '#FF1493',
+  },
+
+  forgot_button: {
+    height: 30,
+    marginBottom: 30,
+  },
+});
