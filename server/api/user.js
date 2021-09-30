@@ -6,16 +6,18 @@ const jwt = require('jsonwebtoken');
 // if it is, we call next(), otherwise we send a 401 Unauthorized
 const secret = process.env.JWT;
 const authRequired = (req, res, next) => {
-  // We grab the token from the cookies
-  const token = req.signedCookies.token;
-
-  // jwt verify throws an exception when the token isn't valid
   try {
-    console.log(jwt.verify(token, secret));
-    jwt.verify(token, secret);
+    // We grab the token from the cookies
+    const token = req.signedCookies.token;
 
-    req.username = jwt.verify(token, secret).username;
-    next();
+    // jwt verify throws an exception when the token isn't valid
+    if (token) {
+      console.log(jwt.verify(token, secret));
+      jwt.verify(token, secret);
+      jwt.verify();
+      req.username = jwt.verify(token, secret).username;
+      next();
+    }
   } catch (error) {
     res.send({
       loggedIn: false,

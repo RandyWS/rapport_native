@@ -1,19 +1,19 @@
 import axios from 'axios';
 import {setSingleFriend} from './userSingleFriend';
 
-const SET_SINGLE_CONTACT = 'SET_SINGLE_CONTACT';
-const RESET_SINGLE_CONTACT = 'RESET_SINGLE_CONTACT';
+const SET_SINGLE_COMMUNICATION = 'SET_SINGLE_COMMUNICATION';
+const RESET_SINGLE_COMMUNICATION = 'RESET_SINGLE_COMMUNICATION';
 
 export const setSingleContact = singleContact => {
   return {
-    type: SET_SINGLE_CONTACT,
+    type: SET_SINGLE_COMMUNICATION,
     singleContact,
   };
 };
 
 export const resetSingleContact = () => {
   return {
-    type: RESET_SINGLE_CONTACT,
+    type: RESET_SINGLE_COMMUNICATION,
     singleContact: {},
   };
 };
@@ -46,9 +46,9 @@ export const createContact = (contact, history) => {
 
 export default (state = {}, action) => {
   switch (action.type) {
-    case SET_SINGLE_CONTACT:
+    case SET_SINGLE_COMMUNICATION:
       return action.singleContact;
-    case RESET_SINGLE_CONTACT:
+    case RESET_SINGLE_COMMUNICATION:
       return action.singleContact;
     default:
       return state;

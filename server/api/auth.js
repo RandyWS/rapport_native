@@ -1,11 +1,12 @@
 const router = require('express').Router();
 const {
-  models: {User, Cart},
+  models: {User},
 } = require('../db');
 module.exports = router;
 
 router.post('/login', async (req, res, next) => {
   try {
+    console.log('log in route');
     res.send({token: await User.authenticate(req.body)});
   } catch (err) {
     next(err);
@@ -15,7 +16,7 @@ router.post('/login', async (req, res, next) => {
 router.post('/signup', async (req, res, next) => {
   try {
     const user = await User.create(req.body);
-    await Cart.create({userId: user.id});
+
     res.send({token: await user.generateToken()});
   } catch (err) {
     if (err.name === 'SequelizeUniqueConstraintError') {
@@ -31,19 +32,5 @@ router.get('/me', async (req, res, next) => {
     res.send(await User.findByToken(req.headers.authorization));
   } catch (ex) {
     next(ex);
-  }
-});
-
-// GET /api/users/:id (get single user)
-router.get('/users/:id', async (req, res, next) => {
-  try {
-    const user = await User.findByPk(req.params.id);
-    if (user) {
-      res.status(200).json(user);
-    } else {
-      res.status(404).json('User not Found');
-    }
-  } catch (err) {
-    next(err);
   }
 });

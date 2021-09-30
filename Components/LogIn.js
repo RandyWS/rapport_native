@@ -8,7 +8,7 @@ import {
   TouchableOpacity,
 } from 'react-native';
 import {connect} from 'react-redux';
-import {_logIn} from '../Redux/loggedIn';
+import {authenticate} from '../Redux';
 
 const LogIn = props => {
   const [email, setEmail] = useState('');
@@ -17,9 +17,7 @@ const LogIn = props => {
   const onSubmit = () => {
     console.log('email', email);
     console.log('password', password);
-    // this.props.logIn({
-    //   ...this.state,
-    // });
+    props.authenticate({email, password});
   };
 
   return (
@@ -62,9 +60,9 @@ const LogIn = props => {
   );
 };
 
-const mapDispatchToProps = (dispatch, {history}) => {
+const mapDispatchToProps = dispatch => {
   return {
-    logIn: credentials => dispatch(_logIn(credentials, history)),
+    authenticate: formData => dispatch(authenticate('login', formData)),
   };
 };
 

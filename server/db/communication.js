@@ -27,6 +27,7 @@ const Communication = db.define('communication', {
     validate: {
       isIn: [types],
     },
+    defaultValue: 'other',
   },
   date: {
     type: Sequelize.DATE,
@@ -34,6 +35,7 @@ const Communication = db.define('communication', {
     validate: {
       notEmpty: true,
     },
+    defaultValue: Sequelize.NOW,
   },
 });
 

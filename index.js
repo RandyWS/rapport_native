@@ -8,10 +8,13 @@ import App from './App';
 import {name as appName} from './app.json';
 import {Provider} from 'react-redux';
 import store from './store';
+import {NavigationContainer} from '@react-navigation/native';
 
 const RNRedux = () => (
   <Provider store={store}>
-    <App />
+    <NavigationContainer>
+      <App />
+    </NavigationContainer>
   </Provider>
 );
 

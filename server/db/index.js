@@ -1,7 +1,7 @@
 const db = require('./database');
-const User = require('./user');
-const Friend = require('./friend');
-const Communication = require('./communication');
+const User = require('./User');
+const Friend = require('./Friend');
+const Communication = require('./Communication');
 
 User.hasMany(Friend, {foreignKey: 'userId'});
 Friend.belongsTo(User, {foreignKey: 'userId'});

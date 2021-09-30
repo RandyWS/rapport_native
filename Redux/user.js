@@ -1,6 +1,6 @@
 import axios from 'axios';
 import {setUserFriends} from './userFriends';
-import {setAuthentication} from './loggedIn';
+import {setAuthentication} from './auth';
 import {setMessage} from './authMessage';
 
 const SET_USER = 'SET_USER';

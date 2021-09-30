@@ -6,10 +6,12 @@
     "android": "react-native run-android",
     "ios": "react-native run-ios",
     "start": "react-native start",
+    "seed": "node script/seed.js",
     "test": "jest",
     "lint": "eslint ."
   },
   "dependencies": {
+    "@react-native-async-storage/async-storage": "^1.15.8",
     "@react-native-picker/picker": "^2.1.0",
     "@react-navigation/drawer": "^6.1.4",
     "axios": "^0.21.4",

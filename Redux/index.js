@@ -1,20 +1,24 @@
 import {combineReducers} from 'redux';
 import user from './user';
-import loggedIn from './loggedIn';
+import auth from './auth';
 import userFriends from './userFriends';
 import contacts from './contacts';
 import authMessage from './authMessage';
-import singleContact from './singleContact';
+import singleCommunication from './singleCommunication';
 import singleFriend from './userSingleFriend';
 
 const appReducer = combineReducers({
-  user,
-  userFriends,
-  loggedIn,
-  contacts,
-  authMessage,
-  singleContact,
-  singleFriend,
+  auth,
 });
 
 export default appReducer;
+
+export * from './auth';
+
+// user,
+// userFriends,
+// auth,
+// contacts,
+// authMessage,
+// singleCommunication,
+// singleFriend,
