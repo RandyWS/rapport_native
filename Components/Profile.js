@@ -5,11 +5,11 @@ import {
   Text,
   View,
   Image,
-  ScrollView,
   TouchableOpacity,
   FlatList,
 } from 'react-native';
 import {connect} from 'react-redux';
+import {_fetchUser} from '../Redux';
 
 class Profile extends Component {
   constructor(props) {
@@ -46,41 +46,21 @@ class Profile extends Component {
           image: 'https://bootdey.com/img/Content/avatar/avatar6.png',
           username: 'johndoe6',
         },
-        {
-          id: 7,
-          image: 'https://bootdey.com/img/Content/avatar/avatar6.png',
-          username: 'johndoe1',
-        },
-        {
-          id: 8,
-          image: 'https://bootdey.com/img/Content/avatar/avatar2.png',
-          username: 'johndoe2',
-        },
-        {
-          id: 9,
-          image: 'https://bootdey.com/img/Content/avatar/avatar3.png',
-          username: 'johndoe3',
-        },
-        {
-          id: 10,
-          image: 'https://bootdey.com/img/Content/avatar/avatar4.png',
-          username: 'johndoe4',
-        },
-        {
-          id: 11,
-          image: 'https://bootdey.com/img/Content/avatar/avatar1.png',
-          username: 'johndoe5',
-        },
-        {
-          id: 12,
-          image: 'https://bootdey.com/img/Content/avatar/avatar6.png',
-          username: 'johndoe6',
-        },
       ],
+      user: {},
+      friends: [],
     };
   }
 
+  componentDidMount() {
+    this.props.fetchUser();
+  }
+
+  componentDidUpdate() {}
+
   render() {
+    const user = this.props.user;
+
     return (
       <View style={styles.container}>
         <View style={styles.header}>
@@ -88,10 +68,12 @@ class Profile extends Component {
             <Image
               style={styles.avatar}
               source={{
-                uri: 'https://images.fineartamerica.com/images/artworkimages/mediumlarge/3/cute-otter-appafo-ghondsary.jpg',
+                uri: user.imageUrl,
               }}
             />
-            <Text style={styles.name}>John Doe</Text>
+            <Text style={styles.name}>
+              {user.firstName} {user.lastName}
+            </Text>
           </View>
         </View>
 
@@ -121,6 +103,19 @@ class Profile extends Component {
   }
 }
 
+const mapState = state => {
+  return {
+    user: state.user,
+    friends: state.friends,
+  };
+};
+
+const mapDispatch = (dispatch, {newJWT}) => {
+  return {
+    fetchUser: () => dispatch(_fetchUser()),
+  };
+};
+
 const styles = StyleSheet.create({
   cardcontainer: {
     overflow: 'hidden',
@@ -128,7 +123,7 @@ const styles = StyleSheet.create({
   },
   container: {
     flex: 1,
-    marginTop: 53,
+    marginTop: 60,
   },
   header: {
     backgroundColor: '#20B2AA',
@@ -181,4 +176,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default connect(null, null)(Profile);
+export default connect(mapState, mapDispatch)(Profile);

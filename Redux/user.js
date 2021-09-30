@@ -1,7 +1,8 @@
 import axios from 'axios';
-import {setUserFriends} from './userFriends';
-import {setAuthentication} from './auth';
-import {setMessage} from './authMessage';
+import {setFriends} from './friends';
+import deviceState from '../services/deviceState';
+
+const TOKEN = 'id_token';
 
 const SET_USER = 'SET_USER';
 
@@ -12,31 +13,25 @@ export const setUser = user => {
   };
 };
 
-const routeToCalendar = () => {};
-
-export const _fetchUser = (username, history) => {
+export const _fetchUser = () => {
   return async dispatch => {
     try {
-      const {data} = await axios.get(`/api/user/authenticated/${username}`);
-      dispatch(setAuthentication(data.loggedIn));
-      dispatch(setMessage(data.message));
-      if (data.user) {
-        dispatch(setUser(data.user));
-        dispatch(setUserFriends(data.user.friends));
+      const token = await deviceState.getJWT();
+      console.log('token', token);
+      if (token) {
+        const {data} = await axios.get(`http://192.168.86.32:8080/api/user/`, {
+          headers: {
+            authorization: token,
+          },
+        });
+
+        console.log('data from fetch user', data.user);
+
+        if (data.user) {
+          dispatch(setUser(data.user));
+          dispatch(setFriends(data.user.friends));
+        }
       }
-    } catch (error) {
-      console.log(error);
-    }
-  };
-};
-
-export const createUser = (newUser, history) => {
-  return async dispatch => {
-    try {
-      const {data} = await axios.post(`/api/user/signup`, newUser);
-      dispatch(setUser(data.user));
-      const path = `/user/${data.user.userName}`;
-      history.push(path);
     } catch (error) {
       console.log(error);
     }

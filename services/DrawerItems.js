@@ -17,6 +17,9 @@ export default [
   {
     name: 'Friends',
   },
+  {
+    name: 'Log Out?',
+  },
 ];
 
 export const loggedInDrawer = [
@@ -31,6 +34,9 @@ export const loggedInDrawer = [
   },
   {
     name: 'Friends',
+  },
+  {
+    name: 'Log Out?',
   },
 ];
 

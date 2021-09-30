@@ -15,8 +15,6 @@ const LogIn = props => {
   const [password, setPassword] = useState('');
 
   const onSubmit = () => {
-    console.log('email', email);
-    console.log('password', password);
     props.authenticate({email, password});
   };
 
@@ -24,12 +22,14 @@ const LogIn = props => {
     <View style={styles.container}>
       {/* Maybe put logo here? */}
 
-      <StatusBar style="auto" />
+      {props.auth.message ? <Text>{props.auth.message}</Text> : null}
+
       <View style={styles.inputView}>
         <TextInput
           style={styles.TextInput}
           placeholder="Email"
           placeholderTextColor="#003f5c"
+          autoCapitalize="none"
           onChangeText={email => setEmail(email)}
         />
       </View>
@@ -40,6 +40,7 @@ const LogIn = props => {
           placeholder="Password"
           placeholderTextColor="#003f5c"
           secureTextEntry={true}
+          autoCapitalize="none"
           onChangeText={password => setPassword(password)}
         />
       </View>
@@ -60,13 +61,19 @@ const LogIn = props => {
   );
 };
 
-const mapDispatchToProps = dispatch => {
+const mapState = state => {
   return {
-    authenticate: formData => dispatch(authenticate('login', formData)),
+    auth: state.auth,
   };
 };
 
-export default connect(null, mapDispatchToProps)(LogIn);
+const mapDispatch = (dispatch, {newJWT}) => {
+  return {
+    authenticate: formData => dispatch(authenticate('login', formData, newJWT)),
+  };
+};
+
+export default connect(mapState, mapDispatch)(LogIn);
 
 const styles = StyleSheet.create({
   container: {

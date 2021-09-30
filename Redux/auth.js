@@ -1,11 +1,11 @@
 import axios from 'axios';
 import deviceState from '../services/deviceState';
 import {_fetchUser, setUser} from './user';
-import {setUserFriends} from './userFriends';
-import {setMessage} from './authMessage';
 
 const TOKEN = 'id_token';
+
 const SET_AUTH = 'SET_AUTH';
+const CLEAR_AUTH = 'CLEAR_AUTH';
 
 export const setAuth = authentication => {
   return {
@@ -14,10 +14,18 @@ export const setAuth = authentication => {
   };
 };
 
-export const logout = () => {
+export const clearAuth = () => {
+  return {
+    type: CLEAR_AUTH,
+    authentication: {},
+  };
+};
+
+export const logout = newJWT => {
   return async dispatch => {
     try {
       deviceState.deleteJWT();
+      newJWT('');
       dispatch(setAuth({loggedIn: false}));
     } catch (error) {
       console.log('AsyncStorage logout Error: ' + error);
@@ -25,26 +33,29 @@ export const logout = () => {
   };
 };
 
-export const authenticate = (method, formData) => {
+export const authenticate = (method, formData, newJWT) => {
   return async dispatch => {
     try {
-      console.log('method, formData', method, formData);
-      const {data} = await axios.post(`api/auth/${method}`, formData);
-      console.log('data sent back from log in', data);
-      // if (data.token) {
-      //   deviceState.saveItem(TOKEN, data.token);
+      const {data} = await axios.post(
+        `http://192.168.86.32:8080/api/auth/${method}`,
+        formData,
+      );
 
-      //   const res = await axios.get('/auth/me', {
-      //     headers: {
-      //       authorization: data.token,
-      //     },
-      //   });
+      if (data.token) {
+        deviceState.saveItem(TOKEN, data.token);
 
-      //   return dispatch(setAuth({loggedIn: !!res.data.id, ...res.data}));
-      // } else {
-      //   console.log('no token');
-      //   dispatch(setAuth({loggedIn: false}));
-      // }
+        const res = await axios.get('http://192.168.86.32:8080/api/auth/me', {
+          headers: {
+            authorization: data.token,
+          },
+        });
+
+        newJWT(data.token, res.data);
+
+        return dispatch(setAuth({loggedIn: !!res.data.id, ...res.data}));
+      } else {
+        dispatch(setAuth({loggedIn: data.loggedIn, message: data.message}));
+      }
     } catch (error) {
       console.log('AsyncStorage authenticate Error: ' + error);
     }
@@ -54,6 +65,8 @@ export const authenticate = (method, formData) => {
 export default (state = false, action) => {
   switch (action.type) {
     case SET_AUTH:
+      return action.authentication;
+    case CLEAR_AUTH:
       return action.authentication;
     default:
       return state;

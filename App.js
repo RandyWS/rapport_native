@@ -9,10 +9,12 @@
 /* eslint-disable react/no-did-update-set-state */
 import React, {Component} from 'react';
 import {Text, View} from 'react-native';
+import {connect} from 'react-redux';
 import {createDrawerNavigator} from '@react-navigation/drawer';
 
 // Components
 import LogIn from './Components/LogIn';
+import LogOut from './Components/LogOut';
 import SignUp from './Components/SignUp';
 import {loggedInDrawer, loggedOutDrawer} from './services/DrawerItems';
 import deviceState from './services/deviceState';
@@ -24,12 +26,13 @@ import AddFriends from './Components/AddFriends';
 
 const Drawer = createDrawerNavigator();
 
-export default class App extends Component {
+class App extends Component {
   constructor(props) {
     super(props);
     this.state = {
       jwt: '',
       loading: true,
+      user: {},
     };
     this.newJWT = this.newJWT.bind(this);
     this.loadJWT = deviceState.loadJWT.bind(this);
@@ -37,10 +40,17 @@ export default class App extends Component {
     this.loadJWT();
   }
 
-  newJWT(jwt) {
+  newJWT(jwt, user) {
     this.setState({
       jwt: jwt,
+      user: user,
     });
+  }
+
+  componentDidUpdate(prevProps) {
+    if (prevProps.auth.id !== this.props.auth.id) {
+      this.setState({user: this.props.auth});
+    }
   }
 
   render() {
@@ -52,7 +62,8 @@ export default class App extends Component {
       );
     }
 
-    console.log('state', this.state);
+    console.log('user state', this.state.user);
+    const {user} = this.state;
 
     return (
       <Drawer.Navigator
@@ -104,12 +115,14 @@ export default class App extends Component {
                 }}
                 component={
                   drawer.name === 'Profile'
-                    ? Profile
+                    ? props => <Profile {...props} user={user} />
                     : drawer.name === 'Calendar'
                     ? RapportCalendar
                     : drawer.name === 'Rapport'
                     ? NewCommunication
-                    : AddFriends
+                    : drawer.name === 'Friends'
+                    ? AddFriends
+                    : props => <LogOut {...props} newJWT={this.newJWT} />
                 }
               />
             ))}
@@ -117,3 +130,11 @@ export default class App extends Component {
     );
   }
 }
+
+const mapState = state => {
+  return {
+    auth: state.auth,
+  };
+};
+
+export default connect(mapState)(App);

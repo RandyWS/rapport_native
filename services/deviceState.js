@@ -18,6 +18,16 @@ const deviceState = {
       console.log('AsyncStorage Error: ' + error.message);
     }
   },
+  async getJWT() {
+    try {
+      const token = await AsyncStorage.getItem('id_token');
+      if (token) {
+        return token;
+      }
+    } catch (error) {
+      console.log('AsyncStorage Error: ' + error.message);
+    }
+  },
 
   async saveItem(key, value) {
     try {
