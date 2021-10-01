@@ -21,6 +21,54 @@ const authRequired = async (req, res, next) => {
   next();
 };
 
+router.get('/', authRequired, async (req, res, next) => {
+  try {
+    if (req.userId) {
+      const friends = await Friend.findAll({
+        where: {
+          userId: req.userId,
+        },
+        include: [
+          {
+            model: Communication,
+            order: ['date'],
+          },
+        ],
+      });
+
+      if (friends.length) {
+        res.status(200).json(friends);
+      }
+    }
+  } catch (error) {
+    next(error);
+  }
+});
+
+router.get('/:friendId', authRequired, async (req, res, next) => {
+  try {
+    if (req.userId) {
+      const friend = await Friend.findOne({
+        where: {
+          userId: req.userId,
+          id: req.params.friendId,
+        },
+        include: [
+          {
+            model: Communication,
+          },
+        ],
+      });
+
+      if (friend.id) {
+        res.status(200).json(friend);
+      }
+    }
+  } catch (error) {
+    next(error);
+  }
+});
+
 router.get('/authenticated/:friendId', authRequired, async (req, res, next) => {
   try {
     const singleFriend = await Friend.findByPk(req.params.friendId);

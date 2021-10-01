@@ -10,9 +10,14 @@
 import React, {Component} from 'react';
 import {Text, View} from 'react-native';
 import {connect} from 'react-redux';
-import {createDrawerNavigator} from '@react-navigation/drawer';
+import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 
 // Components
+import {
+  FriendsNavigator,
+  CalendarNavigator,
+  ProfileNavigator,
+} from './Navigation/Stacks.js';
 import LogIn from './Components/LogIn';
 import LogOut from './Components/LogOut';
 import SignUp from './Components/SignUp';
@@ -22,9 +27,9 @@ import Header from './Components/Header';
 import Profile from './Components/Profile';
 import RapportCalendar from './Components/Calendar';
 import NewCommunication from './Components/NewCommunication';
-import AddFriends from './Components/AddFriends';
+import FriendsList from './Components/FriendsList';
 
-const Drawer = createDrawerNavigator();
+const Tab = createBottomTabNavigator();
 
 class App extends Component {
   constructor(props) {
@@ -63,21 +68,19 @@ class App extends Component {
     }
 
     const user = this.state.user;
-    console.log('user state', user);
 
     return (
-      <Drawer.Navigator
-        drawerType="front"
+      <Tab.Navigator
         initialRouteName="Profile"
         screenOptions={{
           activeTintColor: '#e91e63',
           itemStyle: {marginVertical: 10},
         }}>
         {!this.state.jwt
-          ? loggedOutDrawer.map(drawer => (
-              <Drawer.Screen
-                key={drawer.name}
-                name={drawer.name}
+          ? loggedOutDrawer.map(tab => (
+              <Tab.Screen
+                key={tab.name}
+                name={tab.name}
                 options={{
                   headerShown: true,
                   header: ({navigation, route, options}) => {
@@ -91,18 +94,18 @@ class App extends Component {
                   },
                 }}
                 component={
-                  drawer.name === 'Log In'
+                  tab.name === 'Log In'
                     ? props => <LogIn {...props} newJWT={this.newJWT} />
                     : props => <SignUp {...props} newJWT={this.newJWT} />
                 }
               />
             ))
-          : loggedInDrawer.map(drawer => (
-              <Drawer.Screen
-                key={drawer.name}
-                name={drawer.name}
+          : loggedInDrawer.map(tab => (
+              <Tab.Screen
+                key={tab.name}
+                name={tab.name}
                 options={{
-                  headerShown: true,
+                  headerShown: false,
                   header: ({navigation, route, options}) => {
                     const title =
                       options.headerTitle !== undefined
@@ -114,19 +117,17 @@ class App extends Component {
                   },
                 }}
                 component={
-                  drawer.name === 'Profile'
-                    ? props => <Profile {...props} user={user} />
-                    : drawer.name === 'Calendar'
-                    ? RapportCalendar
-                    : drawer.name === 'Rapport'
-                    ? NewCommunication
-                    : drawer.name === 'Friends'
-                    ? AddFriends
+                  tab.name === 'Profile Screens'
+                    ? props => <ProfileNavigator {...props} user={user} />
+                    : tab.name === 'Calendar Screens'
+                    ? props => <CalendarNavigator {...props} />
+                    : tab.name === 'Rapport'
+                    ? props => <FriendsNavigator {...props} />
                     : props => <LogOut {...props} newJWT={this.newJWT} />
                 }
               />
             ))}
-      </Drawer.Navigator>
+      </Tab.Navigator>
     );
   }
 }

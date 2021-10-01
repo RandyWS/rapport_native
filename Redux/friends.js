@@ -1,8 +1,6 @@
 import axios from 'axios';
 import deviceState from '../services/deviceState';
 
-const TOKEN = 'id_token';
-
 const SET_FRIENDS = 'SET_FRIENDS';
 const SET_NEW_FRIEND = 'SET_NEW_FRIEND';
 
@@ -17,6 +15,31 @@ export const setNewFriend = newFriend => {
   return {
     type: SET_NEW_FRIEND,
     newFriend,
+  };
+};
+
+export const _fetchFriends = () => {
+  return async dispatch => {
+    try {
+      const token = await deviceState.getJWT();
+
+      if (token) {
+        const {data} = await axios.get(
+          `http://192.168.86.32:8080/api/friends/`,
+          {
+            headers: {
+              authorization: token,
+            },
+          },
+        );
+
+        if (data.length) {
+          dispatch(setFriends(data));
+        }
+      }
+    } catch (error) {
+      console.log(error);
+    }
   };
 };
 

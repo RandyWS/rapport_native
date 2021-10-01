@@ -3,14 +3,15 @@ import user from './user';
 import auth from './auth';
 import friends from './friends';
 import contacts from './contacts';
-import singleCommunication from './singleCommunication';
-import singleFriend from './userSingleFriend';
+import singleComm from './singleComm';
+import singleFriend from './singleFriend';
 
 const appReducer = combineReducers({
   auth,
   user,
   friends,
-  singleCommunication,
+  singleFriend,
+  singleComm,
 });
 
 export default appReducer;
@@ -18,11 +19,9 @@ export default appReducer;
 export * from './auth';
 export * from './user';
 export * from './friends';
-export * from './singleCommunication';
+export * from './singleFriend';
+export * from './singleComm';
 
-// user,
-// userFriends,
 // auth,
 // contacts,
-// singleCommunication,
 // singleFriend,

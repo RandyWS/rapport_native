@@ -36,7 +36,6 @@ router.get('/', authRequired, async (req, res, next) => {
     });
 
     if (user.id) {
-      console.log('user sent');
       res.status(200).json(user);
     }
   } catch (error) {

@@ -80,7 +80,6 @@ const styles = StyleSheet.create({
     backgroundColor: '#fff',
     alignItems: 'center',
     justifyContent: 'center',
-    marginTop: 50,
   },
 
   image: {

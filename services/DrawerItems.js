@@ -24,16 +24,13 @@ export default [
 
 export const loggedInDrawer = [
   {
-    name: 'Profile',
-  },
-  {
-    name: 'Calendar',
+    name: 'Calendar Screens',
   },
   {
     name: 'Rapport',
   },
   {
-    name: 'Friends',
+    name: 'Profile Screens',
   },
   {
     name: 'Log Out?',

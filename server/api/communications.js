@@ -24,13 +24,12 @@ const authRequired = async (req, res, next) => {
 router.post('/', authRequired, async (req, res, next) => {
   try {
     if (req.userId) {
-      console.log('req body', req.body);
       const newCommunication = await Communication.create({
         userId: req.userId,
         friendId: 8,
         ...req.body,
       });
-      console.log('nnew communication', newCommunication);
+
       res.status(200).send({
         newCommunication,
       });
@@ -40,45 +39,21 @@ router.post('/', authRequired, async (req, res, next) => {
   }
 });
 
-router.get(
-  '/authenticated/byUserId/:userId',
-  authRequired,
-  async (req, res, next) => {
-    try {
-      const communications = await Communication.findAll({
+router.get('/:commId', authRequired, async (req, res, next) => {
+  try {
+    if (req.userId) {
+      const comm = await Communication.findOne({
         where: {
-          userId: req.params.userId,
+          userId: req.userId,
+          id: req.params.commId,
         },
       });
 
-      res.send({
-        communications,
-      });
-    } catch (error) {
-      next(error);
+      if (comm.id) {
+        res.status(200).json(comm);
+      }
     }
-  },
-);
-
-router.get(
-  '/authenticated/byCommunicationId/:communicationId',
-  authRequired,
-  async (req, res, next) => {
-    try {
-      const singleCommunication = await Communication.findByPk(
-        req.params.communicationId,
-        {
-          include: {
-            model: Friend,
-          },
-        },
-      );
-
-      res.send({
-        singleCommunication,
-      });
-    } catch (error) {
-      next(error);
-    }
-  },
-);
+  } catch (error) {
+    next(error);
+  }
+});

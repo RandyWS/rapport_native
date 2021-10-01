@@ -20,7 +20,7 @@ const AddFriends = props => {
   const onSubmit = () => {
     props.createFriend({nickname, firstName, lastName, description});
   };
-
+  console.log(props);
   return (
     <View style={styles.container}>
       <StatusBar style="auto" />
@@ -85,7 +85,6 @@ const styles = StyleSheet.create({
     backgroundColor: '#fff',
     alignItems: 'center',
     justifyContent: 'center',
-    marginTop: 50,
   },
 
   image: {

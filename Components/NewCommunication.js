@@ -9,7 +9,7 @@ import {
 } from 'react-native';
 import {connect} from 'react-redux';
 import DatePicker from 'react-native-date-picker';
-import {_createCommunication} from '../Redux';
+import {_createComm} from '../Redux';
 
 const NewCommunication = props => {
   const [title, setTitle] = useState('');
@@ -18,9 +18,7 @@ const NewCommunication = props => {
   const [open, setOpen] = useState(false);
 
   const onSubmit = () => {
-    console.log(title, content, date);
-
-    props.createCommunication({title, content, date});
+    props.createComm({title, content, date});
   };
 
   return (
@@ -72,7 +70,7 @@ const NewCommunication = props => {
 
 const mapDispatch = dispatch => {
   return {
-    createCommunication: newComm => dispatch(_createCommunication(newComm)),
+    createComm: newComm => dispatch(_createComm(newComm)),
   };
 };
 
@@ -84,7 +82,6 @@ const styles = StyleSheet.create({
     backgroundColor: '#fff',
     alignItems: 'center',
     justifyContent: 'center',
-    marginTop: 52,
   },
 
   image: {

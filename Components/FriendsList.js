@@ -9,47 +9,69 @@ import {
   FlatList,
 } from 'react-native';
 import {connect} from 'react-redux';
-import {_fetchUser} from '../Redux';
+import {_fetchFriends} from '../Redux';
 
-class Profile extends Component {
+class FriendsList extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      user: {},
       friends: [],
     };
   }
 
   componentDidMount() {
-    this.props.fetchUser();
+    this.props.fetchFriends();
   }
 
   componentDidUpdate(prevProps) {
-    if (prevProps.user !== this.props.user) {
-      this.setState({user: this.props.user});
-    }
     if (prevProps.friends !== this.props.friends) {
       this.setState({friends: this.props.friends});
     }
   }
 
   render() {
-    const {user, friends} = this.state;
-
+    const {friends} = this.state;
+    console.log(this.props);
     return (
       <View style={styles.container}>
         <View style={styles.header}>
           <View style={styles.headerContent}>
-            <Image
-              style={styles.avatar}
-              source={{
-                uri: user.imageUrl,
-              }}
-            />
             <Text style={styles.name}>
-              {user.firstName} {user.lastName}
+              Rapport with {friends.length} friend
+              {friends.length === 1 ? null : 's'}:
             </Text>
           </View>
+        </View>
+
+        <View style={styles.body}>
+          <FlatList
+            enableEmptySections={true}
+            data={friends}
+            contentContainerStyle={styles.cardcontainer}
+            keyExtractor={item => {
+              return item.id;
+            }}
+            scrollEnabled={true}
+            renderItem={({item}) => {
+              return (
+                <TouchableOpacity
+                  onPress={() =>
+                    this.props.navigation.navigate('Friend', {
+                      friendId: item.id,
+                    })
+                  }>
+                  <View style={styles.box}>
+                    <Image style={styles.image} source={{uri: item.imageUrl}} />
+                    <Text style={styles.username}>
+                      {item.nickname
+                        ? item.nickname
+                        : `${item.firstName} ${item.lastName}`}
+                    </Text>
+                  </View>
+                </TouchableOpacity>
+              );
+            }}
+          />
         </View>
       </View>
     );
@@ -58,14 +80,13 @@ class Profile extends Component {
 
 const mapState = state => {
   return {
-    user: state.user,
     friends: state.friends,
   };
 };
 
-const mapDispatch = (dispatch, {newJWT}) => {
+const mapDispatch = dispatch => {
   return {
-    fetchUser: () => dispatch(_fetchUser()),
+    fetchFriends: () => dispatch(_fetchFriends()),
   };
 };
 
@@ -128,4 +149,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default connect(mapState, mapDispatch)(Profile);
+export default connect(mapState, mapDispatch)(FriendsList);

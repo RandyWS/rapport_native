@@ -9,46 +9,40 @@ import {
   FlatList,
 } from 'react-native';
 import {connect} from 'react-redux';
-import {_fetchUser} from '../Redux';
+import {_fetchSingleComm, resetComm} from '../Redux';
 
-class Profile extends Component {
+class SingleCommunication extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      user: {},
-      friends: [],
+      communication: {},
     };
   }
 
   componentDidMount() {
-    this.props.fetchUser();
+    this.props.fetchSingleComm(this.props.route.params.commId);
   }
 
   componentDidUpdate(prevProps) {
-    if (prevProps.user !== this.props.user) {
-      this.setState({user: this.props.user});
-    }
-    if (prevProps.friends !== this.props.friends) {
-      this.setState({friends: this.props.friends});
+    if (prevProps.singleComm !== this.props.singleComm) {
+      this.setState({communication: this.props.singleComm});
     }
   }
 
+  componentWillUnmount() {
+    this.props.resetComm();
+  }
+
   render() {
-    const {user, friends} = this.state;
+    const {communication} = this.state;
 
     return (
       <View style={styles.container}>
         <View style={styles.header}>
           <View style={styles.headerContent}>
-            <Image
-              style={styles.avatar}
-              source={{
-                uri: user.imageUrl,
-              }}
-            />
-            <Text style={styles.name}>
-              {user.firstName} {user.lastName}
-            </Text>
+            <Text style={styles.name}>Date: {communication.date}</Text>
+            <Text style={styles.name}>Title: {communication.title}</Text>
+            <Text style={styles.name}>Content: {communication.content}</Text>
           </View>
         </View>
       </View>
@@ -58,14 +52,14 @@ class Profile extends Component {
 
 const mapState = state => {
   return {
-    user: state.user,
-    friends: state.friends,
+    singleComm: state.singleComm,
   };
 };
 
-const mapDispatch = (dispatch, {newJWT}) => {
+const mapDispatch = dispatch => {
   return {
-    fetchUser: () => dispatch(_fetchUser()),
+    fetchSingleComm: commId => dispatch(_fetchSingleComm(commId)),
+    resetComm: () => dispatch(resetComm()),
   };
 };
 
@@ -82,12 +76,11 @@ const styles = StyleSheet.create({
   },
   headerContent: {
     padding: 30,
-    alignItems: 'center',
   },
   avatar: {
     width: 130,
     height: 130,
-    borderRadius: 63,
+
     borderWidth: 4,
     borderColor: '#FFFFFF',
     marginBottom: 10,
@@ -111,7 +104,7 @@ const styles = StyleSheet.create({
     marginTop: 5,
     marginBottom: 5,
     backgroundColor: '#FFFFFF',
-    flexDirection: 'row',
+    flexDirection: 'column',
     shadowColor: 'black',
     shadowOpacity: 0.2,
     shadowOffset: {
@@ -123,9 +116,8 @@ const styles = StyleSheet.create({
   username: {
     color: '#20B2AA',
     fontSize: 22,
-    alignSelf: 'center',
     marginLeft: 10,
   },
 });
 
-export default connect(mapState, mapDispatch)(Profile);
+export default connect(mapState, mapDispatch)(SingleCommunication);

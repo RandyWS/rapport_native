@@ -6,11 +6,8 @@ export default function Header({screen}) {
   const navigation = useNavigation();
   return (
     <View style={headerStyles.container}>
-      <TouchableOpacity onPress={() => navigation.toggleDrawer()}>
-        <Text>Side Drawer</Text>
-      </TouchableOpacity>
-      <View>
-        <Text>{screen}</Text>
+      <View style={headerStyles.headerContent}>
+        <Text style={headerStyles.screen}>{screen}</Text>
       </View>
     </View>
   );
@@ -19,16 +16,23 @@ export default function Header({screen}) {
 const headerStyles = StyleSheet.create({
   container: {
     position: 'absolute',
-    top: 33,
+
     left: 0,
     width: '100%',
-    backgroundColor: '#fa7da7',
+    backgroundColor: '#9AC4F8',
     elevation: 5,
-    height: 50,
+    height: 90,
     display: 'flex',
     flexDirection: 'row',
     paddingHorizontal: 20,
     alignItems: 'center',
-    justifyContent: 'space-between',
+  },
+  headerContent: {
+    flex: 1,
+    alignItems: 'center',
+  },
+  screen: {
+    color: 'white',
+    alignSelf: 'center',
   },
 });
