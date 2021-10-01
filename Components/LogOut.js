@@ -2,23 +2,59 @@ import React, {useState, Component} from 'react';
 import {StyleSheet, Text, View, TouchableOpacity} from 'react-native';
 import {connect} from 'react-redux';
 import {logout} from '../Redux';
+import {Modal} from '../services/Modal';
+import {Button} from '../services/Button';
 
-const LogOut = props => {
-  const onSubmit = () => {
-    props.logout();
-  };
+class LogOut extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      isModalVisible: true,
+    };
+    this.onSubmit = this.onSubmit.bind(this);
+    this.cancel = this.cancel.bind(this);
+    this.onDismiss = this.onDismiss.bind(this);
+  }
 
-  return (
-    <View style={styles.container}>
-      {/* Maybe put logo here? */}
+  onSubmit() {
+    this.props.logout();
+  }
 
-      <Text>Are you sure you would like to logout?</Text>
-      <TouchableOpacity onPress={onSubmit} style={styles.loginBtn}>
-        <Text style={styles.loginText}>Logout</Text>
-      </TouchableOpacity>
-    </View>
-  );
-};
+  cancel() {
+    this.setState({
+      isModalVisible: false,
+    });
+    this.props.navigation.navigate('Profile Screens', {
+      screen: 'Profile',
+    });
+  }
+
+  onDismiss() {
+    this.setState({isModalVisible: true});
+  }
+
+  render() {
+    const {isModalVisible} = this.state;
+    return (
+      <View style={styles.container}>
+        <Modal isVisible={isModalVisible} onDismiss={this.onDismiss}>
+          <Modal.Container>
+            <Modal.Header title="Are you sure you would like to log out?" />
+            <Modal.Body>
+              <Text style={styles.text}>
+                This app functions best when you remain logged in
+              </Text>
+            </Modal.Body>
+            <Modal.Footer>
+              <Button title="Log Out" onPress={this.onSubmit} />
+              <Button title="Cancel" onPress={this.cancel} />
+            </Modal.Footer>
+          </Modal.Container>
+        </Modal>
+      </View>
+    );
+  }
+}
 
 const mapDispatchToProps = (dispatch, {newJWT}) => {
   return {

@@ -21,6 +21,24 @@ const authRequired = async (req, res, next) => {
   next();
 };
 
+router.get('/', authRequired, async (req, res, next) => {
+  try {
+    if (req.userId) {
+      const comm = await Communication.findAll({
+        where: {
+          userId: req.userId,
+        },
+      });
+
+      if (comm.length) {
+        res.status(200).json(comm);
+      }
+    }
+  } catch (error) {
+    next(error);
+  }
+});
+
 router.post('/', authRequired, async (req, res, next) => {
   try {
     if (req.userId) {
@@ -55,5 +73,18 @@ router.get('/:commId', authRequired, async (req, res, next) => {
     }
   } catch (error) {
     next(error);
+  }
+});
+
+router.delete('/:commId', authRequired, async (req, res, next) => {
+  try {
+    if (req.userId) {
+      const deleteCount = await Communication.destroy({
+        where: {userId: req.userId, id: req.params.commId},
+      });
+      res.status(200).json(deleteCount);
+    }
+  } catch (err) {
+    next(err);
   }
 });

@@ -9,14 +9,20 @@ import {
   FlatList,
 } from 'react-native';
 import {connect} from 'react-redux';
-import {_fetchSingleFriend, resetSingleFriend} from '../Redux';
+import {Modal} from '../services/Modal';
+import {Button} from '../services/Button';
+import {_fetchSingleFriend, resetSingleFriend, _deleteFriend} from '../Redux';
 
 class SingleFriend extends Component {
   constructor(props) {
     super(props);
     this.state = {
       friend: {},
+      communications: [],
+      isModalVisible: false,
     };
+    this.deleteFriend = this.deleteFriend.bind(this);
+    this.displayModal = this.displayModal.bind(this);
   }
 
   componentDidMount() {
@@ -25,7 +31,10 @@ class SingleFriend extends Component {
 
   componentDidUpdate(prevProps) {
     if (prevProps.singleFriend !== this.props.singleFriend) {
-      this.setState({friend: this.props.singleFriend});
+      this.setState({
+        friend: this.props.singleFriend,
+        communications: this.props.singleFriend.communications,
+      });
     }
   }
 
@@ -33,8 +42,18 @@ class SingleFriend extends Component {
     this.props.resetSingleFriend();
   }
 
+  displayModal() {
+    this.setState({isModalVisible: !this.state.isModalVisible});
+  }
+
+  deleteFriend() {
+    this.displayModal();
+    this.props.deleteFriend(this.state.friend.id);
+    this.props.navigation.navigate('Friends List');
+  }
+
   render() {
-    const {friend} = this.state;
+    const {friend, communications, isModalVisible} = this.state;
 
     return (
       <View style={styles.container}>
@@ -54,13 +73,27 @@ class SingleFriend extends Component {
             <Text style={styles.name}>
               {`Rapport since: ${friend.createdAt}`}
             </Text>
+            <TouchableOpacity
+              onPress={() =>
+                this.props.navigation.navigate('Edit Friend', {
+                  friendId: friend.id,
+                })
+              }
+              style={styles.loginBtn}>
+              <Text style={styles.loginText}>Edit Friend</Text>
+            </TouchableOpacity>
+            <TouchableOpacity
+              onPress={this.displayModal}
+              style={styles.loginBtn}>
+              <Text style={styles.loginText}>Delete Friend</Text>
+            </TouchableOpacity>
           </View>
         </View>
 
         <View style={styles.body}>
           <FlatList
             enableEmptySections={true}
-            data={friend.communications}
+            data={communications}
             contentContainerStyle={styles.cardcontainer}
             keyExtractor={item => {
               return item.id;
@@ -85,6 +118,18 @@ class SingleFriend extends Component {
             }}
           />
         </View>
+        <Modal isVisible={isModalVisible}>
+          <Modal.Container>
+            <Modal.Header title="Are you sure you want to delete this friend?" />
+            <Modal.Body>
+              <Text style={styles.text}>This action cannot be undone</Text>
+            </Modal.Body>
+            <Modal.Footer>
+              <Button title="Delete Friend" onPress={this.deleteFriend} />
+              <Button title="Cancel" onPress={this.displayModal} />
+            </Modal.Footer>
+          </Modal.Container>
+        </Modal>
       </View>
     );
   }
@@ -100,6 +145,7 @@ const mapDispatch = dispatch => {
   return {
     fetchSingleFriend: friendId => dispatch(_fetchSingleFriend(friendId)),
     resetSingleFriend: () => dispatch(resetSingleFriend()),
+    deleteFriend: friendId => dispatch(_deleteFriend(friendId)),
   };
 };
 
@@ -116,6 +162,16 @@ const styles = StyleSheet.create({
   },
   headerContent: {
     padding: 30,
+  },
+  loginBtn: {
+    width: '80%',
+    borderRadius: 25,
+    height: 50,
+    alignItems: 'center',
+    justifyContent: 'center',
+    marginTop: 10,
+    marginBottom: 10,
+    backgroundColor: '#FF1493',
   },
   avatar: {
     width: 130,

@@ -94,6 +94,39 @@ const friends = [
   },
 ];
 
+const bananaFriends = [
+  {
+    nickname: 'my love',
+    firstName: 'Banana',
+    lastName: 'Friend1',
+    userId: 6,
+  },
+  {
+    nickname: 'Princey',
+    firstName: 'Banana',
+    lastName: 'Friend2',
+    userId: 6,
+  },
+  {
+    nickname: 'Jiro',
+    firstName: 'Banana',
+    lastName: 'Friend3',
+    userId: 6,
+  },
+  {
+    nickname: 'Piggy',
+    firstName: 'Banana',
+    lastName: 'Friend4',
+    userId: 6,
+  },
+  {
+    nickname: 'robo',
+    firstName: 'Banana',
+    lastName: 'Friend5',
+    userId: 6,
+  },
+];
+
 const communications = [
   {
     title: 'Hello my love!',
@@ -145,6 +178,75 @@ const communications = [
   },
 ];
 
+const bananaCommunications = [
+  {
+    title: 'Hello my love!',
+    date: '2021-10-08',
+    content: 'looooooooooooooove',
+    type: 'text',
+    userId: 6,
+    friendId: 6,
+  },
+  {
+    title: 'Banana',
+    date: '2021-10-01',
+    content: 'bananaaaaaaaaaaa',
+    type: 'text',
+    userId: 6,
+    friendId: 7,
+  },
+  {
+    title: 'Apples',
+    date: '2020-10-11',
+    content: 'aaaaaappleeeeeeees',
+    type: 'text',
+    userId: 6,
+    friendId: 6,
+  },
+  {
+    title: 'Woah',
+    date: '2021-10-03',
+    userId: 6,
+    friendId: 9,
+  },
+  {
+    title: 'Cheese',
+    content: 'cheeeeeeeeeeeeeeeeeese',
+    date: '2021-10-24',
+    type: 'text',
+    userId: 6,
+    friendId: 6,
+  },
+  {
+    title: 'Groceries',
+    date: '2021-09-27',
+    type: 'text',
+    userId: 6,
+    friendId: 7,
+  },
+  {
+    title: 'Word association',
+    date: '2021-10-16',
+    type: 'text',
+    userId: 6,
+    friendId: 8,
+  },
+  {
+    title: 'Mango juice',
+    date: '2021-09-30',
+    type: 'text',
+    userId: 6,
+    friendId: 8,
+  },
+  {
+    title: 'Jamba Juice',
+    date: '2021-10-11',
+    type: 'text',
+    userId: 6,
+    friendId: 6,
+  },
+];
+
 /**
  * seed - this function clears the database, updates tables to
  *      match the models, and populates the database.
@@ -169,6 +271,18 @@ async function seed() {
 
   const newContacts = await Promise.all(
     communications.map(contact => {
+      return Communication.create(contact);
+    }),
+  );
+
+  const newBananaFriends = await Promise.all(
+    bananaFriends.map(friend => {
+      return Friend.create(friend);
+    }),
+  );
+
+  const newBananaContacts = await Promise.all(
+    bananaCommunications.map(contact => {
       return Communication.create(contact);
     }),
   );

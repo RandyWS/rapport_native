@@ -5,14 +5,14 @@ import deviceState from '../services/deviceState';
 const SET_SINGLE_COMM = 'SET_SINGLE_COMM';
 const RESET_SINGLE_COMM = 'RESET_SINGLE_COMM';
 
-export const setComm = singleComm => {
+export const setSingleComm = singleComm => {
   return {
     type: SET_SINGLE_COMM,
     singleComm,
   };
 };
 
-export const resetComm = () => {
+export const resetSingleComm = () => {
   return {
     type: RESET_SINGLE_COMM,
     singleComm: {},
@@ -34,7 +34,7 @@ export const _fetchSingleComm = commId => {
       );
 
       if (data.id) {
-        dispatch(setComm(data));
+        dispatch(setSingleComm(data));
       }
     } catch (error) {
       console.log(error);
@@ -59,11 +59,39 @@ export const _createComm = comm => {
         );
 
         if (data.newCommunication) {
-          dispatch(setComm(data.newCommunication));
+          dispatch(setSingleComm(data.newCommunication));
         }
       }
     } catch (error) {
       console.log('_Create Communication Error: ' + error);
+    }
+  };
+};
+
+export const _deleteComm = commId => {
+  return async dispatch => {
+    try {
+      const token = await deviceState.getJWT();
+
+      if (token) {
+        const {data} = await axios.delete(
+          `http://192.168.86.32:8080/api/communications/${commId}`,
+
+          {
+            headers: {
+              authorization: token,
+            },
+          },
+        );
+        console.log(data);
+
+        // if (data) {
+        //   dispatch(deleteFriend(friendId));
+        //   dispatch(resetSingleFriend());
+        // }
+      }
+    } catch (error) {
+      console.log(error);
     }
   };
 };

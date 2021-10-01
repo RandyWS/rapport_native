@@ -9,14 +9,19 @@ import {
   FlatList,
 } from 'react-native';
 import {connect} from 'react-redux';
-import {_fetchSingleComm, resetComm} from '../Redux';
+import {Modal} from '../services/Modal';
+import {Button} from '../services/Button';
+import {_fetchSingleComm, resetSingleComm, _deleteComm} from '../Redux';
 
 class SingleCommunication extends Component {
   constructor(props) {
     super(props);
     this.state = {
       communication: {},
+      isModalVisible: false,
     };
+    this.deleteComm = this.deleteComm.bind(this);
+    this.displayModal = this.displayModal.bind(this);
   }
 
   componentDidMount() {
@@ -30,11 +35,23 @@ class SingleCommunication extends Component {
   }
 
   componentWillUnmount() {
-    this.props.resetComm();
+    this.props.resetSingleComm();
+  }
+
+  displayModal() {
+    this.setState({isModalVisible: !this.state.isModalVisible});
+  }
+
+  deleteComm() {
+    this.displayModal();
+    this.props.deleteComm(this.state.communication.id);
+    this.props.navigation.navigate('Friend', {
+      friendId: this.state.communication.friendId,
+    });
   }
 
   render() {
-    const {communication} = this.state;
+    const {communication, isModalVisible} = this.state;
 
     return (
       <View style={styles.container}>
@@ -43,8 +60,25 @@ class SingleCommunication extends Component {
             <Text style={styles.name}>Date: {communication.date}</Text>
             <Text style={styles.name}>Title: {communication.title}</Text>
             <Text style={styles.name}>Content: {communication.content}</Text>
+            <TouchableOpacity
+              onPress={this.displayModal}
+              style={styles.loginBtn}>
+              <Text style={styles.loginText}>Delete Communication</Text>
+            </TouchableOpacity>
           </View>
         </View>
+        <Modal isVisible={isModalVisible}>
+          <Modal.Container>
+            <Modal.Header title="Are you sure you want to delete this friend?" />
+            <Modal.Body>
+              <Text style={styles.text}>This action cannot be undone</Text>
+            </Modal.Body>
+            <Modal.Footer>
+              <Button title="Delete Communication" onPress={this.deleteComm} />
+              <Button title="Cancel" onPress={this.displayModal} />
+            </Modal.Footer>
+          </Modal.Container>
+        </Modal>
       </View>
     );
   }
@@ -59,7 +93,8 @@ const mapState = state => {
 const mapDispatch = dispatch => {
   return {
     fetchSingleComm: commId => dispatch(_fetchSingleComm(commId)),
-    resetComm: () => dispatch(resetComm()),
+    resetSingleComm: () => dispatch(resetSingleComm()),
+    deleteComm: commId => dispatch(_deleteComm(commId)),
   };
 };
 
@@ -76,6 +111,16 @@ const styles = StyleSheet.create({
   },
   headerContent: {
     padding: 30,
+  },
+  loginBtn: {
+    width: '80%',
+    borderRadius: 25,
+    height: 50,
+    alignItems: 'center',
+    justifyContent: 'center',
+    marginTop: 10,
+    marginBottom: 10,
+    backgroundColor: '#FF1493',
   },
   avatar: {
     width: 130,

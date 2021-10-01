@@ -19,8 +19,9 @@ const AddFriends = props => {
 
   const onSubmit = () => {
     props.createFriend({nickname, firstName, lastName, description});
+    props.navigation.navigate('Friends List');
   };
-  console.log(props);
+
   return (
     <View style={styles.container}>
       <StatusBar style="auto" />

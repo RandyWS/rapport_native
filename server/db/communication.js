@@ -30,6 +30,22 @@ const Communication = db.define('communication', {
     defaultValue: 'other',
   },
   date: {
+    type: Sequelize.DATEONLY,
+    allowNull: false,
+    validate: {
+      notEmpty: true,
+    },
+    defaultValue: Sequelize.NOW,
+  },
+  start: {
+    type: Sequelize.DATE,
+    allowNull: false,
+    validate: {
+      notEmpty: true,
+    },
+    defaultValue: Sequelize.NOW,
+  },
+  end: {
     type: Sequelize.DATE,
     allowNull: false,
     validate: {

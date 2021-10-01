@@ -45,6 +45,20 @@ router.get('/', authRequired, async (req, res, next) => {
   }
 });
 
+router.post('/', authRequired, async (req, res, next) => {
+  try {
+    if (req.userId) {
+      const newFriend = await Friend.create({userId: req.userId, ...req.body});
+
+      res.status(200).send({
+        newFriend,
+      });
+    }
+  } catch (error) {
+    next(error);
+  }
+});
+
 router.get('/:friendId', authRequired, async (req, res, next) => {
   try {
     if (req.userId) {
@@ -59,6 +73,7 @@ router.get('/:friendId', authRequired, async (req, res, next) => {
           },
         ],
       });
+      console.log(friend);
 
       if (friend.id) {
         res.status(200).json(friend);
@@ -69,28 +84,35 @@ router.get('/:friendId', authRequired, async (req, res, next) => {
   }
 });
 
-router.get('/authenticated/:friendId', authRequired, async (req, res, next) => {
+router.put('/:friendId', authRequired, async (req, res, next) => {
   try {
-    const singleFriend = await Friend.findByPk(req.params.friendId);
+    if (req.userId) {
+      const friend = await Friend.findOne({
+        where: {
+          userId: req.userId,
+          id: req.params.friendId,
+        },
+      });
 
-    res.send({
-      singleFriend,
-    });
+      if (friend.id) {
+        const updatedFriend = await friend.update(req.body);
+        res.status(200).json(updatedFriend);
+      }
+    }
   } catch (error) {
     next(error);
   }
 });
 
-router.post('/', authRequired, async (req, res, next) => {
+router.delete('/:friendId', authRequired, async (req, res, next) => {
   try {
     if (req.userId) {
-      const newFriend = await Friend.create({userId: req.userId, ...req.body});
-
-      res.status(200).send({
-        newFriend,
+      const deleteCount = await Friend.destroy({
+        where: {userId: req.userId, id: req.params.friendId},
       });
+      res.status(200).json(deleteCount);
     }
-  } catch (error) {
-    next(error);
+  } catch (err) {
+    next(err);
   }
 });

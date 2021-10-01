@@ -31,7 +31,7 @@ class FriendsList extends Component {
 
   render() {
     const {friends} = this.state;
-    console.log(this.props);
+
     return (
       <View style={styles.container}>
         <View style={styles.header}>
@@ -40,6 +40,11 @@ class FriendsList extends Component {
               Rapport with {friends.length} friend
               {friends.length === 1 ? null : 's'}:
             </Text>
+            <TouchableOpacity
+              onPress={() => this.props.navigation.navigate('Add Friend')}
+              style={styles.loginBtn}>
+              <Text style={styles.loginText}>Add a Friend</Text>
+            </TouchableOpacity>
           </View>
         </View>
 
@@ -117,6 +122,17 @@ const styles = StyleSheet.create({
     width: 60,
     height: 60,
   },
+  loginBtn: {
+    width: '80%',
+    borderRadius: 25,
+    height: 50,
+    alignItems: 'center',
+    justifyContent: 'center',
+    marginTop: 10,
+    marginBottom: 10,
+    backgroundColor: '#FF1493',
+  },
+
   name: {
     fontSize: 22,
     color: '#FFFFFF',
