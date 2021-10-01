@@ -1,17 +1,16 @@
 const router = require('express').Router();
 const {User, Communication, Friend} = require('../db');
 const jwt = require('jsonwebtoken');
+module.exports = router;
 
-// This is middleware that checks the JWT token in the cookie to see if it's valid
-// if it is, we call next(), otherwise we send a 401 Unauthorized
 const secret = process.env.JWT;
 
-const authRequired = (req, res, next) => {
-  // We grab the token from the cookies
-  const token = req.signedCookies.token;
-  // jwt verify throws an exception when the token isn't valid
+const authRequired = async (req, res, next) => {
+  const token = req.headers.authorization;
+
   try {
-    jwt.verify(token, secret);
+    const {id} = await jwt.verify(token, secret);
+    req.userId = id;
   } catch (error) {
     res.status(401).send({
       loggedIn: false,
@@ -34,20 +33,16 @@ router.get('/authenticated/:friendId', authRequired, async (req, res, next) => {
   }
 });
 
-router.post('/authenticated', authRequired, async (req, res, next) => {
+router.post('/', authRequired, async (req, res, next) => {
   try {
-    console.log(req.body);
-    const singleFriend = await Friend.create(req.body);
-    await singleFriend.setUser(req.body.user.id);
+    if (req.userId) {
+      const newFriend = await Friend.create({userId: req.userId, ...req.body});
 
-    res.send({
-      loggedIn: true,
-      message: 'Successfully Logged In',
-      singleFriend,
-    });
+      res.status(200).send({
+        newFriend,
+      });
+    }
   } catch (error) {
     next(error);
   }
 });
-
-module.exports = router;

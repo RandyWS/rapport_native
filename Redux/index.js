@@ -10,6 +10,7 @@ const appReducer = combineReducers({
   auth,
   user,
   friends,
+  singleCommunication,
 });
 
 export default appReducer;
@@ -17,6 +18,7 @@ export default appReducer;
 export * from './auth';
 export * from './user';
 export * from './friends';
+export * from './singleCommunication';
 
 // user,
 // userFriends,

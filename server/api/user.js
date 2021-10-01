@@ -23,7 +23,6 @@ const authRequired = async (req, res, next) => {
 
 router.get('/', authRequired, async (req, res, next) => {
   try {
-    console.log('get user');
     const user = await User.findOne({
       where: {
         id: req.userId,
@@ -36,9 +35,8 @@ router.get('/', authRequired, async (req, res, next) => {
       ],
     });
 
-    console.log(user);
-
     if (user.id) {
+      console.log('user sent');
       res.status(200).json(user);
     }
   } catch (error) {

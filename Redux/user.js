@@ -17,7 +17,7 @@ export const _fetchUser = () => {
   return async dispatch => {
     try {
       const token = await deviceState.getJWT();
-      console.log('token', token);
+
       if (token) {
         const {data} = await axios.get(`http://192.168.86.32:8080/api/user/`, {
           headers: {
@@ -25,11 +25,9 @@ export const _fetchUser = () => {
           },
         });
 
-        console.log('data from fetch user', data.user);
-
-        if (data.user) {
-          dispatch(setUser(data.user));
-          dispatch(setFriends(data.user.friends));
+        if (data.id) {
+          dispatch(setUser(data));
+          dispatch(setFriends(data.friends));
         }
       }
     } catch (error) {

@@ -15,38 +15,6 @@ class Profile extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      data: [
-        {
-          id: 1,
-          image: 'https://bootdey.com/img/Content/avatar/avatar6.png',
-          username: 'johndoe1',
-        },
-        {
-          id: 2,
-          image: 'https://bootdey.com/img/Content/avatar/avatar2.png',
-          username: 'johndoe2',
-        },
-        {
-          id: 3,
-          image: 'https://bootdey.com/img/Content/avatar/avatar3.png',
-          username: 'johndoe3',
-        },
-        {
-          id: 4,
-          image: 'https://bootdey.com/img/Content/avatar/avatar4.png',
-          username: 'johndoe4',
-        },
-        {
-          id: 5,
-          image: 'https://bootdey.com/img/Content/avatar/avatar1.png',
-          username: 'johndoe5',
-        },
-        {
-          id: 6,
-          image: 'https://bootdey.com/img/Content/avatar/avatar6.png',
-          username: 'johndoe6',
-        },
-      ],
       user: {},
       friends: [],
     };
@@ -56,10 +24,18 @@ class Profile extends Component {
     this.props.fetchUser();
   }
 
-  componentDidUpdate() {}
+  componentDidUpdate(prevProps) {
+    if (prevProps.user !== this.props.user) {
+      this.setState({user: this.props.user});
+    }
+    if (prevProps.friends !== this.props.friends) {
+      this.setState({friends: this.props.friends});
+    }
+  }
 
   render() {
-    const user = this.props.user;
+    const {user, friends} = this.state;
+    console.log(this.props.navigation);
 
     return (
       <View style={styles.container}>
@@ -78,9 +54,13 @@ class Profile extends Component {
         </View>
 
         <View style={styles.body}>
+          <Text style={styles.username}>
+            Rapport with {friends.length} friend
+            {friends.length === 1 ? null : 's'}:
+          </Text>
           <FlatList
             enableEmptySections={true}
-            data={this.state.data}
+            data={friends}
             contentContainerStyle={styles.cardcontainer}
             keyExtractor={item => {
               return item.id;
@@ -90,8 +70,12 @@ class Profile extends Component {
               return (
                 <TouchableOpacity>
                   <View style={styles.box}>
-                    <Image style={styles.image} source={{uri: item.image}} />
-                    <Text style={styles.username}>{item.username}</Text>
+                    <Image style={styles.image} source={{uri: item.imageUrl}} />
+                    <Text style={styles.username}>
+                      {item.nickname
+                        ? item.nickname
+                        : `${item.firstName} ${item.lastName}`}
+                    </Text>
                   </View>
                 </TouchableOpacity>
               );

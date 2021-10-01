@@ -28,7 +28,7 @@ export const logout = newJWT => {
       newJWT('');
       dispatch(setAuth({loggedIn: false}));
     } catch (error) {
-      console.log('AsyncStorage logout Error: ' + error);
+      console.log('Logout Error: ' + error);
     }
   };
 };
@@ -57,7 +57,7 @@ export const authenticate = (method, formData, newJWT) => {
         dispatch(setAuth({loggedIn: data.loggedIn, message: data.message}));
       }
     } catch (error) {
-      console.log('AsyncStorage authenticate Error: ' + error);
+      console.log('Authenticate Error: ' + error);
     }
   };
 };

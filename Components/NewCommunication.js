@@ -9,8 +9,9 @@ import {
 } from 'react-native';
 import {connect} from 'react-redux';
 import DatePicker from 'react-native-date-picker';
+import {_createCommunication} from '../Redux';
 
-const NewCommunication = () => {
+const NewCommunication = props => {
   const [title, setTitle] = useState('');
   const [content, setContent] = useState('');
   const [date, setDate] = useState(new Date());
@@ -19,9 +20,7 @@ const NewCommunication = () => {
   const onSubmit = () => {
     console.log(title, content, date);
 
-    // this.props.logIn({
-    //   ...this.state,
-    // });
+    props.createCommunication({title, content, date});
   };
 
   return (
@@ -45,6 +44,10 @@ const NewCommunication = () => {
         />
       </View>
 
+      <Text style={styles.username}>
+        {date ? `Date of Rapport: ${date.toString().slice(0, 25)}` : null}
+      </Text>
+
       <TouchableOpacity onPress={() => setOpen(true)} style={styles.loginBtn}>
         <Text style={styles.loginText}>Choose Date</Text>
       </TouchableOpacity>
@@ -67,7 +70,13 @@ const NewCommunication = () => {
   );
 };
 
-export default connect(null, null)(NewCommunication);
+const mapDispatch = dispatch => {
+  return {
+    createCommunication: newComm => dispatch(_createCommunication(newComm)),
+  };
+};
+
+export default connect(null, mapDispatch)(NewCommunication);
 
 const styles = StyleSheet.create({
   container: {

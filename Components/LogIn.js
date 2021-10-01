@@ -1,6 +1,5 @@
-import React, {useState, Component} from 'react';
+import React, {useState} from 'react';
 import {
-  StatusBar,
   StyleSheet,
   Text,
   View,

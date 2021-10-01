@@ -8,20 +8,17 @@ import {
   TouchableOpacity,
 } from 'react-native';
 import {connect} from 'react-redux';
+import {_createFriend} from '../Redux';
 
-const AddFriends = () => {
+const AddFriends = props => {
   const [nickname, setNickname] = useState('');
   const [firstName, setFirstName] = useState('');
   const [lastName, setLastName] = useState('');
   const [description, setDescription] = useState('');
-  const [imageUrl, setImageUrl] = useState('');
+  // const [imageUrl, setImageUrl] = useState('');
 
   const onSubmit = () => {
-    console.log(nickname, firstName, lastName, description, imageUrl);
-
-    // this.props.logIn({
-    //   ...this.state,
-    // });
+    props.createFriend({nickname, firstName, lastName, description});
   };
 
   return (
@@ -74,7 +71,13 @@ const AddFriends = () => {
   );
 };
 
-export default connect(null, null)(AddFriends);
+const mapDispatch = dispatch => {
+  return {
+    createFriend: newFriend => dispatch(_createFriend(newFriend)),
+  };
+};
+
+export default connect(null, mapDispatch)(AddFriends);
 
 const styles = StyleSheet.create({
   container: {

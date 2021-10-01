@@ -62,8 +62,8 @@ class App extends Component {
       );
     }
 
-    console.log('user state', this.state.user);
-    const {user} = this.state;
+    const user = this.state.user;
+    console.log('user state', user);
 
     return (
       <Drawer.Navigator

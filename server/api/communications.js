@@ -1,17 +1,16 @@
 const router = require('express').Router();
 const {User, Communication, Friend} = require('../db');
 const jwt = require('jsonwebtoken');
+module.exports = router;
 
-// This is middleware that checks the JWT token in the cookie to see if it's valid
-// if it is, we call next(), otherwise we send a 401 Unauthorized
 const secret = process.env.JWT;
 
-const authRequired = (req, res, next) => {
-  // We grab the token from the cookies
-  const token = req.signedCookies.token;
-  // jwt verify throws an exception when the token isn't valid
+const authRequired = async (req, res, next) => {
+  const token = req.headers.authorization;
+
   try {
-    jwt.verify(token, secret);
+    const {id} = await jwt.verify(token, secret);
+    req.userId = id;
   } catch (error) {
     res.status(401).send({
       loggedIn: false,
@@ -22,22 +21,21 @@ const authRequired = (req, res, next) => {
   next();
 };
 
-router.post('/authenticated', authRequired, async (req, res, next) => {
+router.post('/', authRequired, async (req, res, next) => {
   try {
-    const singleCommunication = await Communication.create(req.body);
-    await singleCommunication.setUser(req.body.user.id);
-    await singleCommunication.setFriend(req.body.friend);
-
-    res.send({
-      loggedIn: true,
-      message: 'Successfully Logged In',
-      singleCommunication,
-    });
-  } catch (error) {
-    if (error.username === 'SequelizeUniqueConstraintError') {
-      res.status(401).send('User already exists');
+    if (req.userId) {
+      console.log('req body', req.body);
+      const newCommunication = await Communication.create({
+        userId: req.userId,
+        friendId: 8,
+        ...req.body,
+      });
+      console.log('nnew communication', newCommunication);
+      res.status(200).send({
+        newCommunication,
+      });
     }
-
+  } catch (error) {
     next(error);
   }
 });
@@ -84,5 +82,3 @@ router.get(
     }
   },
 );
-
-module.exports = router;

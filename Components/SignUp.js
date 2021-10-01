@@ -1,6 +1,5 @@
-import React, {useState, Component} from 'react';
+import React, {useState} from 'react';
 import {
-  StatusBar,
   StyleSheet,
   Text,
   View,
@@ -10,21 +9,20 @@ import {
 
 // Redux
 import {connect} from 'react-redux';
-import {createUser} from '../Redux/user';
+import {authenticate} from '../Redux';
 
-const SignUp = () => {
+const SignUp = props => {
   const [email, setEmail] = useState('');
+  const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [firstName, setFirstName] = useState('');
   const [lastName, setLastName] = useState('');
-  const [imageUrl, setImageUrl] = useState('');
+  // const [imageUrl, setImageUrl] = useState('');
 
   const onSubmit = () => {
-    console.log(firstName, lastName, email, password);
-    // this.props.logIn({
-    //   ...this.state,
-    // });
+    props.authenticate({email, username, password, firstName, lastName});
   };
+
   return (
     <View style={styles.container}>
       <View style={styles.inputView}>
@@ -48,7 +46,18 @@ const SignUp = () => {
       <View style={styles.inputView}>
         <TextInput
           style={styles.TextInput}
+          placeholder="Username"
+          placeholderTextColor="#003f5c"
+          autoCapitalize="none"
+          onChangeText={username => setUsername(username)}
+        />
+      </View>
+
+      <View style={styles.inputView}>
+        <TextInput
+          style={styles.TextInput}
           placeholder="Email"
+          autoCapitalize="none"
           placeholderTextColor="#003f5c"
           onChangeText={email => setEmail(email)}
         />
@@ -58,6 +67,7 @@ const SignUp = () => {
         <TextInput
           style={styles.TextInput}
           placeholder="Password"
+          autoCapitalize="none"
           placeholderTextColor="#003f5c"
           secureTextEntry={true}
           onChangeText={password => setPassword(password)}
@@ -77,13 +87,20 @@ const SignUp = () => {
   );
 };
 
-const mapDispatchToProps = (dispatch, {history}) => {
+const mapState = state => {
   return {
-    createUser: user => dispatch(createUser(user, history)),
+    auth: state.auth,
   };
 };
 
-export default connect(null, mapDispatchToProps)(SignUp);
+const mapDispatch = (dispatch, {newJWT}) => {
+  return {
+    authenticate: formData =>
+      dispatch(authenticate('signup', formData, newJWT)),
+  };
+};
+
+export default connect(mapState, mapDispatch)(SignUp);
 
 const styles = StyleSheet.create({
   container: {
