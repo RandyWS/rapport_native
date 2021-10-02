@@ -42,28 +42,6 @@ router.get('/', authRequired, async (req, res, next) => {
   }
 });
 
-router.get('/recurring', authRequired, async (req, res, next) => {
-  try {
-    if (req.userId) {
-      const comm = await Communication.findAll({
-        where: {
-          userId: req.userId,
-          is_recurring: true,
-        },
-        include: {
-          model: Recurring_Pattern,
-        },
-      });
-
-      // if (comm.length) {
-      //   res.status(200).json(comm);
-      // }
-    }
-  } catch (error) {
-    next(error);
-  }
-});
-
 router.post('/', authRequired, async (req, res, next) => {
   try {
     if (req.userId) {
@@ -84,7 +62,6 @@ router.post('/', authRequired, async (req, res, next) => {
 
 router.post('/recurring/:friendId', authRequired, async (req, res, next) => {
   try {
-    console.log('rew time', req.body.time);
     if (req.userId) {
       // gets the next closest date
       function nextDay(x) {
@@ -97,52 +74,105 @@ router.post('/recurring/:friendId', authRequired, async (req, res, next) => {
       }
 
       const startDate = nextDay(req.body.weekDay);
-      const endDate = startDate.clone().add(1, 'hours');
 
-      const newCommunication = await Communication.create({
-        userId: req.userId,
-        friendId: req.params.friendId,
-        is_recurring: true,
-        title: `contact ${req.body.friend}`,
-        type: 'future',
-        start: startDate,
-        end: endDate,
-      });
+      let firstDay = startDate.clone();
+      let lastDay = startDate.clone().add(1, 'years');
 
-      let recurringType = req.body.frequency;
+      let interval = '';
       let separation_count = 0;
-      if (recurringType === 'daily') {
+      let count = 1;
+      let recurringType = 1;
+      if (req.body.frequency === 'daily') {
+        interval = 'days';
         recurringType = 1;
-      } else if (recurringType === 'weekly') {
+      } else if (req.body.frequency === 'weekly') {
+        interval = 'weeks';
         recurringType = 2;
-      } else if (recurringType === 'bi-weekly') {
+      } else if (req.body.frequency === 'bi-weekly') {
+        interval = 'weeks';
+        count = 2;
         recurringType = 2;
         separation_count = 1;
       } else {
+        interval = 'weeks';
         recurringType = 3;
+        count = 4;
       }
 
-      let recurring;
-      if (req.body.week) {
-        recurring = await Recurring_Pattern.create({
-          commId: newCommunication.id,
-          recurring_type_id: recurringType,
-          separation_count,
-          day_of_week: req.body.weekDay,
-          week_of_month: req.body.week,
-        });
-      } else {
-        recurring = await Recurring_Pattern.create({
-          commId: newCommunication.id,
-          recurring_type_id: recurringType,
-          separation_count,
-          day_of_week: req.body.weekDay,
+      let recurringEvents = [];
+=
+      for (
+        let i = moment(firstDay);
+        i.isBefore(lastDay);
+        i.add(count, interval)
+      ) {
+        recurringEvents.push({
+          userId: req.userId,
+          friendId: req.params.friendId,
+          is_recurring: true,
+          title: `contact ${req.body.friend}`,
+          type: 'future',
+          start: i.clone(),
+          end: i.clone().add(1, 'hours'),
         });
       }
+
+      const newComm = await Promise.all(
+        recurringEvents.map(async contact => {
+          let comm = await Communication.create(contact);
+          await Recurring_Pattern.create({
+            commId: comm.id,
+            recurring_type_id: recurringType,
+            day_of_week: req.body.weekDay,
+            separation_count,
+          });
+          return comm;
+        }),
+      );
+
+      // const newCommunication = await Communication.create({
+      //   userId: req.userId,
+      //   friendId: req.params.friendId,
+      //   is_recurring: true,
+      //   title: `contact ${req.body.friend}`,
+      //   type: 'future',
+      //   start: startDate,
+      //   end: endDate,
+      // });
+
+      // let recurringType = req.body.frequency;
+      // let separation_count = 0;
+      // if (recurringType === 'daily') {
+      //   recurringType = 1;
+      // } else if (recurringType === 'weekly') {
+      //   recurringType = 2;
+      // } else if (recurringType === 'bi-weekly') {
+      //   recurringType = 2;
+      //   separation_count = 1;
+      // } else {
+      //   recurringType = 3;
+      // }
+
+      // let recurring;
+      // if (req.body.week) {
+      //   recurring = await Recurring_Pattern.create({
+      //     commId: newComm[0].id,
+      //     recurring_type_id: recurringType,
+      //     separation_count,
+      //     day_of_week: req.body.weekDay,
+      //     week_of_month: req.body.week,
+      //   });
+      // } else {
+      //   recurring = await Recurring_Pattern.create({
+      //     commId: newComm[0].id,
+      //     recurring_type_id: recurringType,
+      //     separation_count,
+      //     day_of_week: req.body.weekDay,
+      //   });
+      // }
 
       res.status(200).send({
-        newCommunication,
-        recurring,
+        newComm,
       });
     }
   } catch (error) {

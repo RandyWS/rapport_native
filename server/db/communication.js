@@ -16,6 +16,10 @@ const types = [
 const Communication = db.define('communication', {
   title: {
     type: Sequelize.STRING,
+    allowNull: false,
+    validate: {
+      notEmpty: true,
+    },
   },
   content: {
     type: Sequelize.TEXT,
@@ -30,10 +34,16 @@ const Communication = db.define('communication', {
   start: {
     type: Sequelize.DATE,
     allowNull: false,
+    get() {
+      return moment(this.getDataValue('start')).format('llll');
+    },
   },
   end: {
     type: Sequelize.DATE,
     allowNull: false,
+    get() {
+      return moment(this.getDataValue('end')).format('llll');
+    },
   },
   is_recurring: {
     type: Sequelize.BOOLEAN,

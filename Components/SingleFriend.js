@@ -75,6 +75,15 @@ class SingleFriend extends Component {
             </Text>
             <TouchableOpacity
               onPress={() =>
+                this.props.navigation.navigate('Add Communication', {
+                  friendId: friend.id,
+                })
+              }
+              style={styles.loginBtn}>
+              <Text style={styles.loginText}>Add Rapport</Text>
+            </TouchableOpacity>
+            <TouchableOpacity
+              onPress={() =>
                 this.props.navigation.navigate('Edit Friend', {
                   friendId: friend.id,
                 })
@@ -108,9 +117,7 @@ class SingleFriend extends Component {
                     })
                   }>
                   <View style={styles.box}>
-                    <Text style={styles.username}>
-                      Date: {item.date.slice(0, 10)}
-                    </Text>
+                    <Text style={styles.username}>Date: {item.start}</Text>
                     <Text style={styles.username}>Title: {item.title}</Text>
                   </View>
                 </TouchableOpacity>

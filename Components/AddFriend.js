@@ -26,22 +26,11 @@ const AddFriends = props => {
   // contact time preferences
   const [frequency, setFrequency] = useState('weekly');
   const [weekDay, setWeekDay] = useState(0);
-  const [week, setWeek] = useState('');
   const [time, setTime] = useState(new Date(new Date().setHours(20, 0, 0, 0)));
+  // const [week, setWeek] = useState('');
   // const [imageUrl, setImageUrl] = useState('');
 
   const onSubmit = () => {
-    console.log(
-      nickname,
-      firstName,
-      lastName,
-      description,
-      frequency,
-      weekDay,
-      week,
-      time,
-    );
-
     props.createFriend(
       {
         nickname,
@@ -53,34 +42,32 @@ const AddFriends = props => {
         frequency,
         weekDay,
         time,
-        week,
       },
     );
     props.navigation.navigate('Friends List');
   };
 
-  const monthly = () => {
-    setWeek(1);
-    return (
-      <>
-        <Text>
-          Please optionally select which week in the month you would like to
-          contact your friend. The default week is the 1st week.
-        </Text>
-        <RNPickerSelect
-          placeholder={{label: 'Please select week of month', value: null}}
-          onValueChange={value => setWeek(value)}
-          style={pickerSelectStyles}
-          items={[
-            {label: '1st week of the month', value: 1},
-            {label: '2nd week of the month', value: 2},
-            {label: '3rd week of the month', value: 3},
-            {label: '4th week of the month', value: 4},
-          ]}
-        />
-      </>
-    );
-  };
+  // const monthly = () => {
+  //   return (
+  //     <>
+  //       <Text>
+  //         Please optionally select which week in the month you would like to
+  //         contact your friend. The default week is the 1st week.
+  //       </Text>
+  //       <RNPickerSelect
+  //         placeholder={{label: 'Please select week of month', value: null}}
+  //         onValueChange={value => setWeek(value)}
+  //         style={pickerSelectStyles}
+  //         items={[
+  //           {label: '1st week of the month', value: 1},
+  //           {label: '2nd week of the month', value: 2},
+  //           {label: '3rd week of the month', value: 3},
+  //           {label: '4th week of the month', value: 4},
+  //         ]}
+  //       />
+  //     </>
+  //   );
+  // };
 
   return (
     <View style={styles.container}>
@@ -164,8 +151,6 @@ const AddFriends = props => {
             {label: 'Sunday', value: 0},
           ]}
         />
-
-        {frequency === 'monthly' ? monthly() : null}
 
         <Text>
           Optionally, please select the time at which you would like to contact

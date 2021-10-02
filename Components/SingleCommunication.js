@@ -57,7 +57,7 @@ class SingleCommunication extends Component {
       <View style={styles.container}>
         <View style={styles.header}>
           <View style={styles.headerContent}>
-            <Text style={styles.name}>Date: {communication.date}</Text>
+            <Text style={styles.name}>Date: {communication.start}</Text>
             <Text style={styles.name}>Title: {communication.title}</Text>
             <Text style={styles.name}>Content: {communication.content}</Text>
             <TouchableOpacity

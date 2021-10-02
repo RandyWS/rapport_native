@@ -9,6 +9,7 @@ import {
 } from 'react-native';
 import {connect} from 'react-redux';
 import DatePicker from 'react-native-date-picker';
+import RNPickerSelect from 'react-native-picker-select';
 import {_createComm} from '../Redux';
 
 const NewCommunication = props => {
@@ -18,14 +19,23 @@ const NewCommunication = props => {
   const [start, setStart] = useState(new Date());
   const [end, setEnd] = useState(new Date());
   const [open, setOpen] = useState(false);
+  const [titleError, setTitleError] = useState('');
 
   const onSubmit = () => {
-    props.createComm({title, content, type, start, end});
+    if (!title) {
+      setTitleError('You must include a title');
+    } else if (title && titleError) {
+      setTitleError('');
+    }
+
+    if (!titleError) {
+      props.createComm({title, content, type, start, end});
+    }
   };
 
   return (
     <View style={styles.container}>
-      <StatusBar style="auto" />
+      {titleError ? <Text>{titleError}</Text> : null}
       <View style={styles.inputView}>
         <TextInput
           style={styles.TextInput}
@@ -44,24 +54,42 @@ const NewCommunication = props => {
         />
       </View>
 
-      {/* <Text style={styles.username}>
-        {date ? `Date of Rapport: ${date.toString().slice(0, 25)}` : null}
-      </Text> */}
+      <RNPickerSelect
+        placeholder={{label: 'select type of communication', value: null}}
+        onValueChange={value => setType(value)}
+        style={pickerSelectStyles}
+        items={[
+          {label: 'phone-call', value: 'phone-call'},
+          {label: 'text', value: 'text'},
+          {label: 'social-media', value: 'social-media'},
+          {label: 'email', value: 'email'},
+          {label: 'letter', value: 'letter'},
+          {label: 'other', value: 'other'},
+        ]}
+      />
+
+      <Text style={styles.username}>
+        {start ? `Date of Rapport: ${start.toString().slice(0, 25)}` : null}
+      </Text>
 
       <TouchableOpacity onPress={() => setOpen(true)} style={styles.loginBtn}>
-        <Text style={styles.loginText}>Choose Date</Text>
+        <Text style={styles.loginText}>Choose date and time of Rapport</Text>
       </TouchableOpacity>
 
-      {/* <DatePicker
+      <TouchableOpacity onPress={() => setOpen(true)} style={styles.loginBtn}>
+        <Text style={styles.loginText}>Choose end time of Rapport</Text>
+      </TouchableOpacity>
+
+      <DatePicker
         modal
         open={open}
         date={start}
         onConfirm={date => {
           setOpen(false);
-          setDate(date);
+          setStart(date);
         }}
         onCancel={() => setOpen(false)}
-      /> */}
+      />
 
       <TouchableOpacity onPress={onSubmit} style={styles.loginBtn}>
         <Text style={styles.loginText}>ADD CONVERSATION</Text>
@@ -117,5 +145,18 @@ const styles = StyleSheet.create({
     marginTop: 10,
     marginBottom: 10,
     backgroundColor: '#FF1493',
+  },
+});
+
+const pickerSelectStyles = StyleSheet.create({
+  inputIOS: {
+    fontSize: 16,
+    paddingVertical: 12,
+    paddingHorizontal: 10,
+    borderWidth: 1,
+    borderColor: 'gray',
+    borderRadius: 4,
+    color: 'black',
+    paddingRight: 30, // to ensure the text is never behind the icon
   },
 });
