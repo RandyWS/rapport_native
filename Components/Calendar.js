@@ -24,10 +24,7 @@ class RapportCalendar extends Component {
 
   render() {
     const {communications} = this.state;
-    if (!communications.length) {
-      return null;
-    }
-    console.log(communications);
+
     return (
       <SafeAreaView style={styles.container}>
         <Calendar events={communications} mode="month" height={600} />

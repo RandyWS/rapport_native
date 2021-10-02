@@ -1,5 +1,6 @@
 import axios from 'axios';
 import deviceState from '../services/deviceState';
+import {_createRecurringComm} from './index';
 
 const SET_FRIENDS = 'SET_FRIENDS';
 const SET_NEW_FRIEND = 'SET_NEW_FRIEND';
@@ -59,7 +60,7 @@ export const _fetchFriends = () => {
   };
 };
 
-export const _createFriend = newFriend => {
+export const _createFriend = (newFriend, comm) => {
   return async dispatch => {
     try {
       const token = await deviceState.getJWT();
@@ -76,7 +77,19 @@ export const _createFriend = newFriend => {
         );
 
         if (data.newFriend) {
+          let friendName = '';
+          if (newFriend.nickname) {
+            friendName = newFriend.nickname;
+          } else {
+            friendName = newFriend.firstName + newFriend.lastName;
+          }
           dispatch(setNewFriend(data.newFriend));
+          dispatch(
+            _createRecurringComm(
+              {friend: friendName, ...comm},
+              data.newFriend.id,
+            ),
+          );
         }
       }
     } catch (error) {

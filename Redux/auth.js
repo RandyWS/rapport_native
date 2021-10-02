@@ -24,8 +24,9 @@ export const clearAuth = () => {
 export const logout = newJWT => {
   return async dispatch => {
     try {
+      console.log('newJWT', newJWT);
       deviceState.deleteJWT();
-      newJWT('');
+      newJWT('', {});
       dispatch(setAuth({loggedIn: false}));
     } catch (error) {
       console.log('Logout Error: ' + error);

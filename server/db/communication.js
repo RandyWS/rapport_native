@@ -1,5 +1,6 @@
 const Sequelize = require('sequelize');
 const db = require('./database');
+const moment = require('moment');
 
 const types = [
   'phone-call',
@@ -9,15 +10,12 @@ const types = [
   'email',
   'letter',
   'other',
+  'future',
 ];
 
 const Communication = db.define('communication', {
   title: {
     type: Sequelize.STRING,
-    allowNull: false,
-    validate: {
-      notEmpty: true,
-    },
   },
   content: {
     type: Sequelize.TEXT,
@@ -27,31 +25,19 @@ const Communication = db.define('communication', {
     validate: {
       isIn: [types],
     },
-    defaultValue: 'other',
-  },
-  date: {
-    type: Sequelize.DATEONLY,
-    allowNull: false,
-    validate: {
-      notEmpty: true,
-    },
-    defaultValue: Sequelize.NOW,
+    defaultValue: 'future',
   },
   start: {
     type: Sequelize.DATE,
     allowNull: false,
-    validate: {
-      notEmpty: true,
-    },
-    defaultValue: Sequelize.NOW,
   },
   end: {
     type: Sequelize.DATE,
     allowNull: false,
-    validate: {
-      notEmpty: true,
-    },
-    defaultValue: Sequelize.NOW,
+  },
+  is_recurring: {
+    type: Sequelize.BOOLEAN,
+    defaultValue: false,
   },
 });
 

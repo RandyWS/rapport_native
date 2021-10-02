@@ -35,6 +35,7 @@ class LogOut extends Component {
 
   render() {
     const {isModalVisible} = this.state;
+    console.log('newJWT', this.props);
     return (
       <View style={styles.container}>
         <Modal isVisible={isModalVisible} onDismiss={this.onDismiss}>

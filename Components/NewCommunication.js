@@ -14,11 +14,13 @@ import {_createComm} from '../Redux';
 const NewCommunication = props => {
   const [title, setTitle] = useState('');
   const [content, setContent] = useState('');
-  const [date, setDate] = useState(new Date());
+  const [type, setType] = useState('');
+  const [start, setStart] = useState(new Date());
+  const [end, setEnd] = useState(new Date());
   const [open, setOpen] = useState(false);
 
   const onSubmit = () => {
-    props.createComm({title, content, date});
+    props.createComm({title, content, type, start, end});
   };
 
   return (
@@ -42,24 +44,24 @@ const NewCommunication = props => {
         />
       </View>
 
-      <Text style={styles.username}>
+      {/* <Text style={styles.username}>
         {date ? `Date of Rapport: ${date.toString().slice(0, 25)}` : null}
-      </Text>
+      </Text> */}
 
       <TouchableOpacity onPress={() => setOpen(true)} style={styles.loginBtn}>
         <Text style={styles.loginText}>Choose Date</Text>
       </TouchableOpacity>
 
-      <DatePicker
+      {/* <DatePicker
         modal
         open={open}
-        date={date}
+        date={start}
         onConfirm={date => {
           setOpen(false);
           setDate(date);
         }}
         onCancel={() => setOpen(false)}
-      />
+      /> */}
 
       <TouchableOpacity onPress={onSubmit} style={styles.loginBtn}>
         <Text style={styles.loginText}>ADD CONVERSATION</Text>

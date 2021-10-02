@@ -1,6 +1,13 @@
 'use strict';
 
-const {db, User, Friend, Communication} = require('../server/db');
+const {
+  db,
+  User,
+  Friend,
+  Communication,
+  Recurring_Pattern,
+  Recurring_Type,
+} = require('../server/db');
 const {green, red} = require('chalk');
 
 const users = [
@@ -40,13 +47,7 @@ const users = [
     imageUrl:
       'https://cdn.vox-cdn.com/thumbor/gt_z0ExHHmCsLdHBSOxsMtuNSEo=/0x0:2048x1025/1200x800/filters:focal(770x330:1096x656)/cdn.vox-cdn.com/uploads/chorus_image/image/66875564/CatBus.0.jpg',
   },
-  {
-    firstName: 'Banana',
-    lastName: 'Mango',
-    email: 'banana@banana.com',
-    password: 'password',
-    username: 'banana',
-  },
+
   {
     firstName: 'Apple',
     lastName: 'Cider',
@@ -94,36 +95,39 @@ const friends = [
   },
 ];
 
+const banana = {
+  firstName: 'Banana',
+  lastName: 'Mango',
+  email: 'banana@banana.com',
+  password: 'password',
+  username: 'banana',
+};
+
 const bananaFriends = [
   {
     nickname: 'my love',
     firstName: 'Banana',
     lastName: 'Friend1',
-    userId: 6,
   },
   {
     nickname: 'Princey',
     firstName: 'Banana',
     lastName: 'Friend2',
-    userId: 6,
   },
   {
     nickname: 'Jiro',
     firstName: 'Banana',
     lastName: 'Friend3',
-    userId: 6,
   },
   {
     nickname: 'Piggy',
     firstName: 'Banana',
     lastName: 'Friend4',
-    userId: 6,
   },
   {
     nickname: 'robo',
     firstName: 'Banana',
     lastName: 'Friend5',
-    userId: 6,
   },
 ];
 
@@ -131,49 +135,67 @@ const communications = [
   {
     title: 'Hello my love!',
     date: '2021-10-08',
+    start: '2021-10-08 04:05:02',
+    end: '2021-10-08 04:20:02',
     content: 'looooooooooooooove',
     type: 'text',
   },
   {
     title: 'Banana',
     date: '2021-10-01',
+    start: '2021-10-01 04:05:02',
+    end: '2021-10-01 04:20:02',
     content: 'bananaaaaaaaaaaa',
     type: 'text',
   },
   {
     title: 'Apples',
     date: '2020-10-11',
+    start: '2021-10-11 04:05:02',
+    end: '2021-10-11 04:20:02',
     content: 'aaaaaappleeeeeeees',
     type: 'text',
   },
   {
     title: 'Woah',
     date: '2021-10-03',
+    start: '2021-10-03 04:05:02',
+    end: '2021-10-03 04:20:02',
   },
   {
     title: 'Cheese',
     content: 'cheeeeeeeeeeeeeeeeeese',
     date: '2021-10-24',
+    start: '2021-10-24 04:05:02',
+    end: '2021-10-24 04:20:02',
     type: 'text',
   },
   {
     title: 'Groceries',
     date: '2021-09-27',
+    start: '2021-09-27 04:05:02',
+    end: '2021-09-27 04:20:02',
     type: 'text',
   },
   {
     title: 'Word association',
     date: '2021-10-16',
+    start: '2021-10-16 04:05:02',
+    end: '2021-10-16 04:20:02',
     type: 'text',
   },
   {
     title: 'Mango juice',
     date: '2021-09-30',
+    start: '2021-09-30 04:05:02',
+    end: '2021-09-30 04:20:02',
     type: 'text',
   },
   {
     title: 'Jamba Juice',
     date: '2021-10-11',
+    start: '2021-10-11 04:05:02',
+    end: '2021-10-11 04:20:02',
     type: 'text',
   },
 ];
@@ -182,68 +204,116 @@ const bananaCommunications = [
   {
     title: 'Hello my love!',
     date: '2021-10-08',
+    // start: '2021-10-08 04:05:02',
+    // end: '2021-10-08 04:20:02',
+    start: new Date(2021, 9, 8, 4, 5),
+    end: new Date(2021, 9, 8, 4, 20),
     content: 'looooooooooooooove',
     type: 'text',
-    userId: 6,
+
     friendId: 6,
   },
   {
     title: 'Banana',
     date: '2021-10-01',
+    // start: '2021-10-01 04:05:02',
+    // end: '2021-10-01 04:20:02',
+    start: new Date(2021, 9, 1, 4, 5),
+    end: new Date(2021, 9, 1, 4, 20),
     content: 'bananaaaaaaaaaaa',
     type: 'text',
-    userId: 6,
+
     friendId: 7,
   },
   {
     title: 'Apples',
     date: '2020-10-11',
+    // start: '2021-10-11 04:05:02',
+    // end: '2021-10-11 04:20:02',
+    start: new Date(2021, 9, 11, 4, 5),
+    end: new Date(2021, 9, 11, 4, 20),
     content: 'aaaaaappleeeeeeees',
     type: 'text',
-    userId: 6,
+
     friendId: 6,
   },
   {
     title: 'Woah',
     date: '2021-10-03',
-    userId: 6,
+    // start: '2021-10-03 04:05:02',
+    // end: '2021-10-03 04:20:02',
+    start: new Date(2021, 9, 3, 4, 5),
+    end: new Date(2021, 9, 3, 4, 20),
+
     friendId: 9,
   },
   {
     title: 'Cheese',
     content: 'cheeeeeeeeeeeeeeeeeese',
     date: '2021-10-24',
+    // start: '2021-10-24 04:05:02',
+    // end: '2021-10-24 04:20:02',
+    start: new Date(2021, 9, 24, 4, 5),
+    end: new Date(2021, 9, 24, 4, 20),
     type: 'text',
-    userId: 6,
+
     friendId: 6,
   },
   {
     title: 'Groceries',
     date: '2021-09-27',
+    // start: '2021-09-27 04:05:02',
+    // end: '2021-09-27 04:20:02',
+    start: new Date(2021, 9, 27, 4, 5),
+    end: new Date(2021, 9, 27, 4, 20),
     type: 'text',
-    userId: 6,
+
     friendId: 7,
   },
   {
     title: 'Word association',
     date: '2021-10-16',
+    // start: '2021-10-16 04:05:02',
+    // end: '2021-10-16 04:20:02',
+    start: new Date(2021, 9, 16, 4, 5),
+    end: new Date(2021, 9, 16, 4, 20),
     type: 'text',
-    userId: 6,
+
     friendId: 8,
   },
   {
     title: 'Mango juice',
     date: '2021-09-30',
+    // start: '2021-09-30 04:05:02',
+    // end: '2021-09-30 04:20:02',
+    start: new Date(2021, 8, 30, 4, 5),
+    end: new Date(2021, 8, 30, 4, 20),
     type: 'text',
-    userId: 6,
+
     friendId: 8,
   },
   {
     title: 'Jamba Juice',
     date: '2021-10-11',
+    // start: '2021-10-11 04:05:02',
+    // end: '2021-10-11 04:20:02',
+    start: new Date(2021, 9, 11, 4, 5),
+    end: new Date(2021, 9, 11, 4, 20),
     type: 'text',
-    userId: 6,
+
     friendId: 6,
+  },
+];
+
+const recurringType = [
+  {
+    recurring_type: 'daily',
+  },
+  {
+    recurring_type: 'weekly',
+  },
+  {
+    recurring_type: 'monthly',
   },
 ];
 
@@ -275,15 +345,23 @@ async function seed() {
     }),
   );
 
+  const bananaUser = await User.create(banana);
+
   const newBananaFriends = await Promise.all(
     bananaFriends.map(friend => {
-      return Friend.create(friend);
+      return Friend.create({userId: bananaUser.id, ...friend});
     }),
   );
 
   const newBananaContacts = await Promise.all(
     bananaCommunications.map(contact => {
-      return Communication.create(contact);
+      return Communication.create({userId: bananaUser.id, ...contact});
+    }),
+  );
+
+  const recurringTypes = await Promise.all(
+    recurringType.map(type => {
+      return Recurring_Type.create(type);
     }),
   );
 
@@ -320,6 +398,7 @@ async function seed() {
   console.log(green(`seeded ${newUsers.length} users`));
   console.log(green(`seeded ${newFriends.length} friends`));
   console.log(green(`seeded ${newContacts.length} communications`));
+  console.log(green(`seeded ${recurringTypes.length} recurring types`));
   console.log(green('Seeding success!'));
 }
 
