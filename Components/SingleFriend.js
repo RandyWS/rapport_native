@@ -45,6 +45,10 @@ class SingleFriend extends Component {
         communications: this.props.singleFriend.communications,
       });
     }
+
+    if (prevProps.singleFriend.id !== this.props.route.params.friendId) {
+      this.props.fetchSingleFriend(this.props.route.params.friendId);
+    }
   }
 
   componentWillUnmount() {
