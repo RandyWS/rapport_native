@@ -59,12 +59,13 @@ class FriendsList extends Component {
             data={friends}
             contentContainerStyle={styles.cardcontainer}
             keyExtractor={item => {
-              return item.id;
+              return item.id.toString();
             }}
             scrollEnabled={true}
             renderItem={({item}) => {
               return (
                 <TouchableOpacity
+                  keyExtractor={item => item.id}
                   onPress={() =>
                     this.props.navigation.navigate('Friend', {
                       friendId: item.id,

@@ -89,6 +89,7 @@ const NewCommunication = props => {
           {label: 'email', value: 'email'},
           {label: 'letter', value: 'letter'},
           {label: 'other', value: 'other'},
+          {label: 'in-person', value: 'in-person'},
         ]}
       />
 

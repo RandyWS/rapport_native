@@ -38,7 +38,6 @@ class SingleCommunication extends Component {
 
   componentDidUpdate(prevProps) {
     if (prevProps.singleComm !== this.props.singleComm) {
-      console.log('start end', this.props.singleComm);
       this.setState({communication: this.props.singleComm});
     }
   }

@@ -2,7 +2,7 @@ import React, {Component} from 'react';
 import {connect} from 'react-redux';
 import {SafeAreaView, StyleSheet, TouchableOpacity, Image} from 'react-native';
 import {Calendar} from 'react-native-big-calendar';
-import {_fetchComm} from '../Redux';
+import {_fetchComm, resetComm} from '../Redux';
 
 class RapportCalendar extends Component {
   constructor(props) {
@@ -23,12 +23,26 @@ class RapportCalendar extends Component {
     }
   }
 
-  renderEvent = (
-    event: ICalendarEvent<T>,
-    touchableOpacityProps: CalendarTouchableOpacityProps,
-  ) => {
+  componentWillUnmount() {
+    this.setState({communications: []});
+    this.props.resetComm();
+  }
+
+  renderEvent = (event, touchableOpacityProps) => {
+    console.log(touchableOpacityProps);
     return (
-      <TouchableOpacity style={styles.box} {...touchableOpacityProps}>
+      <TouchableOpacity
+        // onPress={event => {
+        //   console.log(event);
+        //   this.props.navigation.navigate('Rapport', {
+        //     screen: 'Communication',
+        //     params: {
+        //       commId: event.id,
+        //     },
+        //   });
+        // }}
+        style={styles.box}
+        {...touchableOpacityProps}>
         <Image
           style={styles.image}
           source={{
@@ -41,6 +55,7 @@ class RapportCalendar extends Component {
 
   render() {
     const {communications} = this.state;
+    console.log('comm', communications);
 
     return (
       <SafeAreaView style={styles.container}>
@@ -49,9 +64,9 @@ class RapportCalendar extends Component {
           events={communications}
           renderEvent={this.renderEvent}
           mode="month"
+          keyExtractor={item => item.id.toString()}
           height={600}
-          onPressEvent={event => {
-            console.log(event);
+          onPress={event => {
             this.props.navigation.navigate('Rapport', {
               screen: 'Communication',
               params: {
@@ -74,6 +89,7 @@ const mapState = state => {
 const mapDispatch = dispatch => {
   return {
     fetchComm: () => dispatch(_fetchComm()),
+    resetComm: () => dispatch(resetComm()),
   };
 };
 
@@ -85,8 +101,8 @@ const styles = StyleSheet.create({
     backgroundColor: '#fbfbf2',
   },
   image: {
-    width: 50,
-    height: 50,
+    width: 45,
+    height: 45,
   },
   box: {
     justifyContent: 'center',

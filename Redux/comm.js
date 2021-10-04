@@ -15,7 +15,7 @@ export const setComm = comm => {
 export const resetComm = () => {
   return {
     type: SET_COMM,
-    contacts: [],
+    comm: [],
   };
 };
 

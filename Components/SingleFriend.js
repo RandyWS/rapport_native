@@ -159,7 +159,7 @@ class SingleFriend extends Component {
             data={communications}
             contentContainerStyle={styles.cardcontainer}
             keyExtractor={item => {
-              return item.id;
+              return item.id.toString();
             }}
             scrollEnabled={true}
             renderItem={({item}) => {
