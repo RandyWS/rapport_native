@@ -5,6 +5,8 @@ import {
   View,
   TextInput,
   TouchableOpacity,
+  Image,
+  SafeAreaView,
 } from 'react-native';
 import {connect} from 'react-redux';
 import {authenticate} from '../Redux';
@@ -18,8 +20,16 @@ const LogIn = props => {
   };
 
   return (
-    <View style={styles.container}>
-      {/* Maybe put logo here? */}
+    <SafeAreaView style={styles.container}>
+      <View style={styles.imageContent}>
+        <Image
+          style={styles.avatar}
+          source={{
+            uri: 'https://media.istockphoto.com/vectors/ecology-r-letter-logo-with-green-leaf-vector-id1257065672?k=20&m=1257065672&s=612x612&w=0&h=jANYJdbMDCENpHJuKkdH4bqF4O-n1xC6U4yhvdBY4_M=',
+          }}
+        />
+        <Text style={styles.headerText}>Rapport</Text>
+      </View>
 
       {props.auth.message ? <Text>{props.auth.message}</Text> : null}
 
@@ -58,7 +68,7 @@ const LogIn = props => {
         style={styles.loginBtn}>
         <Text style={styles.loginText}>Sign Up!</Text>
       </TouchableOpacity>
-    </View>
+    </SafeAreaView>
   );
 };
 
@@ -84,10 +94,6 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
 
-  image: {
-    marginBottom: 40,
-  },
-
   inputView: {
     backgroundColor: '#dde5b6',
     borderRadius: 30,
@@ -96,6 +102,24 @@ const styles = StyleSheet.create({
     marginBottom: 20,
 
     // alignItems: 'center',
+  },
+  imageContent: {
+    padding: 10,
+    alignItems: 'center',
+    marginBottom: 30,
+  },
+
+  avatar: {
+    width: 140,
+    height: 140,
+  },
+  headerText: {
+    fontWeight: '700',
+    fontSize: 40,
+    alignSelf: 'center',
+    fontFamily: 'Helvetica-Bold',
+    marginTop: 30,
+    color: '#264653',
   },
 
   TextInput: {

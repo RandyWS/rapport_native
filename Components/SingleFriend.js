@@ -82,7 +82,7 @@ class SingleFriend extends Component {
 
   render() {
     const {friend, communications, isModalVisible} = this.state;
-    console.log(this.props.route.params.friendId);
+
     return (
       <SafeAreaView style={styles.container}>
         <View style={styles.header}>

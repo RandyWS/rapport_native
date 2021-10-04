@@ -30,6 +30,7 @@ router.get('/', authRequired, async (req, res, next) => {
         where: {
           userId: req.userId,
         },
+        order: [['start', 'ASC']],
         include: {
           model: Friend,
         },

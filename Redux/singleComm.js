@@ -47,7 +47,6 @@ export const _fetchSingleComm = commId => {
 export const _createComm = comm => {
   return async dispatch => {
     try {
-      console.log(comm);
       const token = await deviceState.getJWT();
 
       if (token) {

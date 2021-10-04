@@ -375,7 +375,8 @@ const randyCommunications = [
 
     start: new Date(2021, 9, 8, 4, 5),
     end: new Date(2021, 9, 8, 4, 20),
-    content: 'looooooooooooooove',
+    content:
+      'the function renderEvent must return a ReactElement. The component should be wrapped inside a TouchableOpacity or any DOM element which accepts positioning and click events (onPress, ...)',
     type: 'text',
 
     friendId: 6,
@@ -437,10 +438,10 @@ const randyCommunications = [
   },
   {
     title: 'Mango juice',
-    date: '2021-10-11',
+    date: '2021-10-14',
 
-    start: new Date(2021, 8, 30, 4, 5),
-    end: new Date(2021, 8, 30, 4, 20),
+    start: new Date(2021, 9, 14, 4, 5),
+    end: new Date(2021, 9, 14, 4, 20),
     type: 'text',
     friendId: 8,
   },
@@ -449,8 +450,8 @@ const randyCommunications = [
     date: '2021-10-13',
     // start: '2021-10-11 04:05:02',
     // end: '2021-10-11 04:20:02',
-    start: new Date(2021, 9, 11, 4, 5),
-    end: new Date(2021, 9, 11, 4, 20),
+    start: new Date(2021, 9, 13, 4, 5),
+    end: new Date(2021, 9, 13, 4, 20),
     type: 'social-media',
 
     friendId: 6,
@@ -538,7 +539,7 @@ async function seed() {
   await newRandyContacts[4].setFriend(newrandyFriends[3]);
   await newRandyContacts[5].setFriend(newrandyFriends[4]);
   await newRandyContacts[6].setFriend(newrandyFriends[5]);
-  await newRandyContacts[7].setFriend(newrandyFriends[6]);
+  await newRandyContacts[7].setFriend(newrandyFriends[5]);
   await newRandyContacts[8].setFriend(newrandyFriends[6]);
 
   await newFriends[0].setUser(newUsers[0]);

@@ -4,6 +4,7 @@ import deviceState from '../services/deviceState';
 const SET_COMM = 'SET_COMM';
 const RESET_COMM = 'RESET_COMM';
 const ADD_COMM = 'ADD_COMM';
+const DELETE_FRIEND_COMM = 'DELETE_FRIEND_COMM';
 
 export const setComm = comm => {
   return {
@@ -23,6 +24,13 @@ export const addComm = comm => {
   return {
     type: ADD_COMM,
     comm,
+  };
+};
+
+export const deleteFriendComm = friendId => {
+  return {
+    type: DELETE_FRIEND_COMM,
+    friendId,
   };
 };
 
@@ -102,6 +110,15 @@ export default (state = [], action) => {
       return action.comm;
     case ADD_COMM:
       return [...action.comm, ...state];
+    case DELETE_FRIEND_COMM:
+      let deletedStateCopy = [...state];
+      if (deletedStateCopy.length) {
+        deletedStateCopy = deletedStateCopy.filter(
+          item => item.friendId !== action.friendId,
+        );
+      }
+      return deletedStateCopy;
+
     default:
       return state;
   }

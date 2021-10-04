@@ -40,6 +40,10 @@ class SingleCommunication extends Component {
     if (prevProps.singleComm !== this.props.singleComm) {
       this.setState({communication: this.props.singleComm});
     }
+
+    if (prevProps.singleComm.id !== this.props.route.params.commId) {
+      this.props.fetchSingleComm(this.props.route.params.commId);
+    }
   }
 
   componentWillUnmount() {

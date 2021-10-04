@@ -107,9 +107,13 @@ router.put('/:friendId', authRequired, async (req, res, next) => {
 router.delete('/:friendId', authRequired, async (req, res, next) => {
   try {
     if (req.userId) {
+      const deleteCommCount = await Communication.destroy({
+        where: {userId: req.userId, friendId: req.params.friendId},
+      });
       const deleteCount = await Friend.destroy({
         where: {userId: req.userId, id: req.params.friendId},
       });
+
       res.status(200).json(deleteCount);
     }
   } catch (err) {

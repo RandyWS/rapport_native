@@ -24,25 +24,15 @@ class RapportCalendar extends Component {
   }
 
   componentWillUnmount() {
-    this.setState({communications: []});
     this.props.resetComm();
   }
 
-  renderEvent = (event, touchableOpacityProps) => {
-    console.log(touchableOpacityProps);
+  renderEvent = (
+    event,
+    touchableOpacityProps: CalendarTouchableOpacityProps,
+  ) => {
     return (
-      <TouchableOpacity
-        // onPress={event => {
-        //   console.log(event);
-        //   this.props.navigation.navigate('Rapport', {
-        //     screen: 'Communication',
-        //     params: {
-        //       commId: event.id,
-        //     },
-        //   });
-        // }}
-        style={styles.box}
-        {...touchableOpacityProps}>
+      <TouchableOpacity {...touchableOpacityProps}>
         <Image
           style={styles.image}
           source={{
@@ -55,7 +45,6 @@ class RapportCalendar extends Component {
 
   render() {
     const {communications} = this.state;
-    console.log('comm', communications);
 
     return (
       <SafeAreaView style={styles.container}>
@@ -66,7 +55,7 @@ class RapportCalendar extends Component {
           mode="month"
           keyExtractor={item => item.id.toString()}
           height={600}
-          onPress={event => {
+          onPressEvent={event => {
             this.props.navigation.navigate('Rapport', {
               screen: 'Communication',
               params: {
@@ -103,8 +92,5 @@ const styles = StyleSheet.create({
   image: {
     width: 45,
     height: 45,
-  },
-  box: {
-    justifyContent: 'center',
   },
 });

@@ -1,5 +1,5 @@
 import axios from 'axios';
-import {editFriend, deleteFriend} from './index';
+import {editFriend, deleteFriend, deleteFriendComm} from './index';
 import deviceState from '../services/deviceState';
 
 const SET_SINGLE_FRIEND = 'SET_SINGLE_FRIEND';
@@ -89,6 +89,7 @@ export const _deleteFriend = (friendId, navigation) => {
 
         if (data) {
           dispatch(deleteFriend(friendId));
+          dispatch(deleteFriendComm(friendId));
           dispatch(resetSingleFriend());
         }
       }
