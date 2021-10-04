@@ -1,15 +1,17 @@
 /* eslint-disable react/no-did-update-set-state */
 import React, {Component} from 'react';
 import {
-  StatusBar,
+  SafeAreaView,
   StyleSheet,
   Text,
   View,
   TextInput,
   TouchableOpacity,
+  Image,
 } from 'react-native';
 import {connect} from 'react-redux';
 import {_editFriend, _fetchSingleFriend, resetSingleFriend} from '../Redux';
+import AntDesign from 'react-native-vector-icons/AntDesign';
 
 class EditFriend extends Component {
   constructor(props) {
@@ -19,6 +21,7 @@ class EditFriend extends Component {
       firstName: '',
       lastName: '',
       description: '',
+      imageUrl: '',
     };
     this.onSubmit = this.onSubmit.bind(this);
   }
@@ -29,9 +32,9 @@ class EditFriend extends Component {
 
   componentDidUpdate(prevProps) {
     if (prevProps.singleFriend !== this.props.singleFriend) {
-      const {nickname, firstName, lastName, description} =
+      const {nickname, firstName, lastName, description, imageUrl} =
         this.props.singleFriend;
-      this.setState({nickname, firstName, lastName, description});
+      this.setState({nickname, firstName, lastName, description, imageUrl});
     }
   }
 
@@ -48,17 +51,32 @@ class EditFriend extends Component {
 
   render() {
     return (
-      <View style={styles.container}>
-        <StatusBar style="auto" />
-        <View style={styles.inputView}>
-          <TextInput
-            style={styles.TextInput}
-            placeholder="Nickname"
-            placeholderTextColor="#003f5c"
-            value={this.state.nickname}
-            onChangeText={nickname => this.setState({nickname: nickname})}
-          />
+      <SafeAreaView style={styles.container}>
+        <View style={styles.header}>
+          <View style={styles.icon}>
+            <AntDesign.Button
+              name="back"
+              backgroundColor="#99c1b9"
+              style={styles.button}
+              onPress={() =>
+                this.props.navigation.navigate('Friend', {
+                  friendId: this.props.route.params.friendId,
+                })
+              }
+            />
+          </View>
         </View>
+
+        {this.state.imageUrl ? (
+          <View style={styles.imageContent}>
+            <Image
+              style={styles.avatar}
+              source={{
+                uri: this.state.imageUrl,
+              }}
+            />
+          </View>
+        ) : null}
 
         <View style={styles.inputView}>
           <TextInput
@@ -83,7 +101,17 @@ class EditFriend extends Component {
         <View style={styles.inputView}>
           <TextInput
             style={styles.TextInput}
-            placeholder="Description"
+            placeholder="Nickname (optional)"
+            placeholderTextColor="#003f5c"
+            value={this.state.nickname}
+            onChangeText={nickname => this.setState({nickname: nickname})}
+          />
+        </View>
+
+        <View style={styles.content}>
+          <TextInput
+            style={styles.TextInput}
+            placeholder="Description (optional)"
             placeholderTextColor="#003f5c"
             value={this.state.description}
             onChangeText={description =>
@@ -92,12 +120,22 @@ class EditFriend extends Component {
           />
         </View>
 
+        <View style={styles.inputView}>
+          <TextInput
+            style={styles.TextInput}
+            placeholder="ImageUrl"
+            placeholderTextColor="#003f5c"
+            value={this.state.imageUrl}
+            onChangeText={imageUrl => this.setState({imageUrl: imageUrl})}
+          />
+        </View>
+
         <Text style={{fontSize: 16, fontWeight: '700'}}>Upload an Image</Text>
 
         <TouchableOpacity onPress={this.onSubmit} style={styles.loginBtn}>
           <Text style={styles.loginText}>Edit Friend</Text>
         </TouchableOpacity>
-      </View>
+      </SafeAreaView>
     );
   }
 }
@@ -120,21 +158,47 @@ const mapDispatch = (dispatch, {navigation}) => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
+    backgroundColor: '#FFFFFF',
+    flexDirection: 'column',
+    justifyContent: 'space-evenly',
+  },
+  header: {
+    backgroundColor: '#709775',
+    shadowColor: 'black',
+    shadowOpacity: 0.2,
+    padding: 5,
+    shadowOffset: {
+      height: 1,
+      width: -2,
+    },
+    elevation: 2,
   },
 
+  icon: {
+    marginRight: 'auto',
+    flexDirection: 'row',
+    padding: 5,
+    shadowColor: 'black',
+    shadowOpacity: 0.2,
+    shadowOffset: {
+      height: 0.2,
+      width: -0.4,
+    },
+    elevation: 0.5,
+  },
   image: {
     marginBottom: 40,
   },
 
   inputView: {
-    backgroundColor: '#FFC0CB',
-    borderRadius: 30,
+    backgroundColor: '#dde5b6',
+    borderRadius: 4,
     width: '70%',
     height: 45,
     marginBottom: 20,
+    borderWidth: 0.3,
+    borderColor: 'gray',
+    width: '100%',
 
     // alignItems: 'center',
   },
@@ -143,19 +207,45 @@ const styles = StyleSheet.create({
     height: 50,
     flex: 1,
     padding: 10,
-    marginLeft: 20,
+    fontSize: 16,
+    alignItems: 'center',
+  },
+  content: {
+    backgroundColor: '#dde5b6',
+    borderRadius: 4,
+    width: '70%',
+    height: 200,
+    marginBottom: 20,
+    borderWidth: 0.3,
+    borderColor: 'gray',
+    width: '100%',
+  },
+
+  imageContent: {
+    padding: 20,
     alignItems: 'center',
   },
 
+  avatar: {
+    width: 140,
+    height: 140,
+  },
+
   loginBtn: {
-    width: '80%',
-    borderRadius: 25,
+    width: '100%',
+    borderRadius: 4,
     height: 50,
     alignItems: 'center',
     justifyContent: 'center',
+    margin: 'auto',
     marginTop: 10,
     marginBottom: 10,
-    backgroundColor: '#FF1493',
+    backgroundColor: '#709775',
+  },
+  loginText: {
+    color: 'white',
+    fontWeight: '700',
+    fontSize: 18,
   },
 
   forgot_button: {

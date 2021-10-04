@@ -11,6 +11,9 @@ import React, {Component} from 'react';
 import {Text, View} from 'react-native';
 import {connect} from 'react-redux';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
+import Feather from 'react-native-vector-icons/Feather';
+import AntDesign from 'react-native-vector-icons/AntDesign';
+import Ionicons from 'react-native-vector-icons/Ionicons';
 
 // Components
 import {
@@ -73,8 +76,12 @@ class App extends Component {
       <Tab.Navigator
         initialRouteName="Profile"
         screenOptions={{
-          activeTintColor: '#e91e63',
+          activeTintColor: '#6ede8a',
           itemStyle: {marginVertical: 10},
+          inactiveTintColor: '#dde5b6',
+          style: {
+            backgroundColor: '#00818A',
+          },
         }}>
         {!this.state.jwt
           ? loggedOutDrawer.map(tab => (
@@ -82,7 +89,33 @@ class App extends Component {
                 key={tab.name}
                 name={tab.name}
                 options={{
-                  headerShown: true,
+                  tabBarIcon: ({color, focused}) => {
+                    let iconName;
+
+                    if (tab.name === 'Log In') {
+                      return (
+                        <Feather
+                          name="log-in"
+                          focused={focused}
+                          size={25}
+                          color={color}
+                        />
+                      );
+                    } else if (tab.name === 'Sign Up') {
+                      return (
+                        <AntDesign
+                          name="adduser"
+                          focused={focused}
+                          size={25}
+                          color={color}
+                        />
+                      );
+                    }
+                  },
+
+                  tabBarActiveTintColor: '#6ede8a',
+                  tabBarInactiveTintColor: '#97a97c',
+                  headerShown: false,
                   header: ({navigation, route, options}) => {
                     const title =
                       options.headerTitle !== undefined
@@ -105,6 +138,48 @@ class App extends Component {
                 key={tab.name}
                 name={tab.name}
                 options={{
+                  tabBarIcon: ({color, focused}) => {
+                    let iconName;
+
+                    if (tab.name === 'Profile Screens') {
+                      return (
+                        <Ionicons
+                          name="person-circle-outline"
+                          focused={focused}
+                          size={25}
+                          color={color}
+                        />
+                      );
+                    } else if (tab.name === 'Calendar Screens') {
+                      return (
+                        <Feather
+                          name="calendar"
+                          focused={focused}
+                          size={25}
+                          color={color}
+                        />
+                      );
+                    } else if (tab.name === 'Log Out') {
+                      <Feather
+                        name="log-out"
+                        focused={focused}
+                        size={25}
+                        color={color}
+                      />;
+                    } else {
+                      return (
+                        <Ionicons
+                          name="people-outline"
+                          focused={focused}
+                          size={25}
+                          color={color}
+                        />
+                      );
+                    }
+                  },
+
+                  tabBarActiveTintColor: '#6ede8a',
+                  tabBarInactiveTintColor: '#97a97c',
                   headerShown: false,
                   header: ({navigation, route, options}) => {
                     const title =

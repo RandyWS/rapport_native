@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
 import {connect} from 'react-redux';
-import {SafeAreaView, StyleSheet} from 'react-native';
+import {SafeAreaView, StyleSheet, TouchableOpacity, Image} from 'react-native';
 import {Calendar} from 'react-native-big-calendar';
 import {_fetchComm} from '../Redux';
 
@@ -10,6 +10,7 @@ class RapportCalendar extends Component {
     this.state = {
       communications: [],
     };
+    this.renderEvent = this.renderEvent.bind(this);
   }
 
   componentDidMount() {
@@ -22,12 +23,43 @@ class RapportCalendar extends Component {
     }
   }
 
+  renderEvent = (
+    event: ICalendarEvent<T>,
+    touchableOpacityProps: CalendarTouchableOpacityProps,
+  ) => {
+    return (
+      <TouchableOpacity style={styles.box} {...touchableOpacityProps}>
+        <Image
+          style={styles.image}
+          source={{
+            uri: event.imageUrl,
+          }}
+        />
+      </TouchableOpacity>
+    );
+  };
+
   render() {
     const {communications} = this.state;
 
     return (
       <SafeAreaView style={styles.container}>
-        <Calendar events={communications} mode="month" height={600} />
+        <Calendar
+          eventCellStyle={{backgroundColor: 'transparent'}}
+          events={communications}
+          renderEvent={this.renderEvent}
+          mode="month"
+          height={600}
+          onPressEvent={event => {
+            console.log(event);
+            this.props.navigation.navigate('Rapport', {
+              screen: 'Communication',
+              params: {
+                commId: event.id,
+              },
+            });
+          }}
+        />
       </SafeAreaView>
     );
   }
@@ -50,6 +82,13 @@ export default connect(mapState, mapDispatch)(RapportCalendar);
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#fff',
+    backgroundColor: '#fbfbf2',
+  },
+  image: {
+    width: 50,
+    height: 50,
+  },
+  box: {
+    justifyContent: 'center',
   },
 });

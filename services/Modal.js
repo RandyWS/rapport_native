@@ -35,7 +35,7 @@ const ModalFooter = ({children}) => (
 
 const styles = StyleSheet.create({
   container: {
-    backgroundColor: '#ffffff',
+    backgroundColor: '#FFFFFF',
     borderRadius: 25,
     borderWidth: 1,
     borderColor: '#000',
@@ -56,10 +56,10 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     paddingHorizontal: 15,
     minHeight: 100,
+    fontSize: 24,
   },
   footer: {
     justifyContent: 'center',
-
     alignItems: 'center',
     padding: 10,
     flexDirection: 'column',

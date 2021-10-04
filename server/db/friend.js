@@ -4,10 +4,6 @@ const db = require('./database');
 const Friend = db.define('friend', {
   nickname: {
     type: Sequelize.STRING,
-    allowNull: false,
-    validate: {
-      notEmpty: true,
-    },
   },
   firstName: {
     type: Sequelize.STRING,
@@ -25,7 +21,7 @@ const Friend = db.define('friend', {
   imageUrl: {
     type: Sequelize.TEXT,
     defaultValue:
-      'https://dejpknyizje2n.cloudfront.net/marketplace/products/realistic-drawing-of-an-otter-sticker-1590543174.2700732.png',
+      'https://media.istockphoto.com/vectors/ecology-r-letter-logo-with-green-leaf-vector-id1257065672?k=20&m=1257065672&s=612x612&w=0&h=jANYJdbMDCENpHJuKkdH4bqF4O-n1xC6U4yhvdBY4_M=',
     validate: {
       isUrl: true,
     },

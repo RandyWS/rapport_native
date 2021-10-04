@@ -33,7 +33,7 @@ export const loggedInDrawer = [
     name: 'Profile Screens',
   },
   {
-    name: 'Log Out?',
+    name: 'Log Out',
   },
 ];
 

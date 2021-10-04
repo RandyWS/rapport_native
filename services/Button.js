@@ -10,7 +10,7 @@ export const Button = ({title, onPress}) => {
 };
 const styles = StyleSheet.create({
   button: {
-    backgroundColor: 'blue',
+    backgroundColor: '#709775',
     marginTop: 15,
     paddingVertical: 15,
     borderRadius: 25,

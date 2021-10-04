@@ -6,11 +6,13 @@ import {
   View,
   TextInput,
   TouchableOpacity,
+  SafeAreaView,
 } from 'react-native';
 import {connect} from 'react-redux';
 import DatePicker from 'react-native-date-picker';
 import RNPickerSelect from 'react-native-picker-select';
 import {_createComm} from '../Redux';
+import AntDesign from 'react-native-vector-icons/AntDesign';
 
 const NewCommunication = props => {
   const [title, setTitle] = useState('');
@@ -29,27 +31,49 @@ const NewCommunication = props => {
     }
 
     if (!titleError) {
-      props.createComm({title, content, type, start, end});
+      props.createComm({
+        friendId: props.route.params.friendId,
+        title,
+        content,
+        type,
+        start,
+        end,
+      });
     }
+    props.navigation.navigate('Friends List');
   };
 
   return (
-    <View style={styles.container}>
+    <SafeAreaView style={styles.container}>
+      <View style={styles.header}>
+        <View style={styles.icon}>
+          <AntDesign.Button
+            name="back"
+            backgroundColor="#99c1b9"
+            style={styles.button}
+            onPress={() =>
+              props.navigation.navigate('Friend', {
+                friendId: props.route.params.friendId,
+              })
+            }
+          />
+        </View>
+      </View>
       {titleError ? <Text>{titleError}</Text> : null}
       <View style={styles.inputView}>
         <TextInput
           style={styles.TextInput}
           placeholder="title of entry"
-          placeholderTextColor="#003f5c"
+          placeholderTextColor="#52796f"
           onChangeText={title => setTitle(title)}
         />
       </View>
 
-      <View style={styles.inputView}>
+      <View style={styles.content}>
         <TextInput
           style={styles.TextInput}
           placeholder="content of conversation"
-          placeholderTextColor="#003f5c"
+          placeholderTextColor="#52796f"
           onChangeText={content => setContent(content)}
         />
       </View>
@@ -94,7 +118,7 @@ const NewCommunication = props => {
       <TouchableOpacity onPress={onSubmit} style={styles.loginBtn}>
         <Text style={styles.loginText}>ADD CONVERSATION</Text>
       </TouchableOpacity>
-    </View>
+    </SafeAreaView>
   );
 };
 
@@ -109,21 +133,47 @@ export default connect(null, mapDispatch)(NewCommunication);
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
+    backgroundColor: '#FFFFFF',
+    flexDirection: 'column',
+    justifyContent: 'space-evenly',
+  },
+  header: {
+    backgroundColor: '#709775',
+    shadowColor: 'black',
+    shadowOpacity: 0.2,
+    padding: 5,
+    shadowOffset: {
+      height: 1,
+      width: -2,
+    },
+    elevation: 2,
   },
 
+  icon: {
+    marginRight: 'auto',
+    flexDirection: 'row',
+    padding: 5,
+    shadowColor: 'black',
+    shadowOpacity: 0.2,
+    shadowOffset: {
+      height: 0.2,
+      width: -0.4,
+    },
+    elevation: 0.5,
+  },
   image: {
     marginBottom: 40,
   },
 
   inputView: {
-    backgroundColor: '#FFC0CB',
-    borderRadius: 30,
+    backgroundColor: '#dde5b6',
+    borderRadius: 4,
     width: '70%',
     height: 45,
     marginBottom: 20,
+    borderWidth: 0.3,
+    borderColor: 'gray',
+    width: '100%',
 
     // alignItems: 'center',
   },
@@ -132,31 +182,54 @@ const styles = StyleSheet.create({
     height: 50,
     flex: 1,
     padding: 10,
-    marginLeft: 20,
+    fontSize: 16,
     alignItems: 'center',
   },
 
+  content: {
+    backgroundColor: '#dde5b6',
+    borderRadius: 4,
+    width: '70%',
+    height: 200,
+    marginBottom: 20,
+    borderWidth: 0.3,
+    borderColor: 'gray',
+    width: '100%',
+  },
+
   loginBtn: {
-    width: '80%',
-    borderRadius: 25,
+    width: '100%',
+    borderRadius: 4,
     height: 50,
     alignItems: 'center',
     justifyContent: 'center',
+    margin: 'auto',
     marginTop: 10,
     marginBottom: 10,
-    backgroundColor: '#FF1493',
+    backgroundColor: '#709775',
+  },
+  loginText: {
+    color: 'white',
+    fontWeight: '700',
+    fontSize: 18,
   },
 });
 
 const pickerSelectStyles = StyleSheet.create({
   inputIOS: {
     fontSize: 16,
+    backgroundColor: '#dde5b6',
     paddingVertical: 12,
     paddingHorizontal: 10,
-    borderWidth: 1,
+    borderWidth: 0.3,
     borderColor: 'gray',
     borderRadius: 4,
     color: 'black',
+
     paddingRight: 30, // to ensure the text is never behind the icon
+  },
+  placeholder: {
+    color: '#52796f',
+    padding: 10,
   },
 });

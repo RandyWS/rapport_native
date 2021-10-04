@@ -7,9 +7,12 @@ import {
   Image,
   TouchableOpacity,
   FlatList,
+  StatusBar,
+  SafeAreaView,
 } from 'react-native';
 import {connect} from 'react-redux';
 import {_fetchFriends} from '../Redux';
+import AntDesign from 'react-native-vector-icons/AntDesign';
 
 class FriendsList extends Component {
   constructor(props) {
@@ -33,18 +36,20 @@ class FriendsList extends Component {
     const {friends} = this.state;
 
     return (
-      <View style={styles.container}>
+      <SafeAreaView style={styles.container}>
         <View style={styles.header}>
           <View style={styles.headerContent}>
-            <Text style={styles.name}>
+            <View style={styles.icon}>
+              <AntDesign.Button
+                name="addusergroup"
+                backgroundColor="#99c1b9"
+                onPress={() => this.props.navigation.navigate('Add Friend')}
+              />
+            </View>
+            <Text style={styles.headerText}>
               Rapport with {friends.length} friend
-              {friends.length === 1 ? null : 's'}:
+              {friends.length === 1 ? null : 's'}
             </Text>
-            <TouchableOpacity
-              onPress={() => this.props.navigation.navigate('Add Friend')}
-              style={styles.loginBtn}>
-              <Text style={styles.loginText}>Add a Friend</Text>
-            </TouchableOpacity>
           </View>
         </View>
 
@@ -67,18 +72,20 @@ class FriendsList extends Component {
                   }>
                   <View style={styles.box}>
                     <Image style={styles.image} source={{uri: item.imageUrl}} />
-                    <Text style={styles.username}>
-                      {item.nickname
-                        ? item.nickname
-                        : `${item.firstName} ${item.lastName}`}
-                    </Text>
+                    <View style={styles.info}>
+                      <Text style={styles.username}>
+                        {item.nickname
+                          ? item.nickname
+                          : `${item.firstName} ${item.lastName}`}
+                      </Text>
+                    </View>
                   </View>
                 </TouchableOpacity>
               );
             }}
           />
         </View>
-      </View>
+      </SafeAreaView>
     );
   }
 }
@@ -104,50 +111,60 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   header: {
-    backgroundColor: '#20B2AA',
+    backgroundColor: '#709775',
+    shadowColor: 'black',
+    shadowOpacity: 0.2,
+    shadowOffset: {
+      height: 1,
+      width: -2,
+    },
+    elevation: 2,
   },
   headerContent: {
-    padding: 30,
+    padding: 10,
     alignItems: 'center',
   },
-  avatar: {
-    width: 130,
-    height: 130,
-    borderRadius: 63,
-    borderWidth: 4,
-    borderColor: '#FFFFFF',
-    marginBottom: 10,
+  icon: {
+    marginLeft: 'auto',
+    shadowColor: 'black',
+    shadowOpacity: 0.2,
+    shadowOffset: {
+      height: 0.2,
+      width: -0.4,
+    },
+    elevation: 0.5,
+  },
+  info: {
+    flexDirection: 'column',
+    padding: 20,
   },
   image: {
-    width: 60,
-    height: 60,
-  },
-  loginBtn: {
-    width: '80%',
-    borderRadius: 25,
-    height: 50,
-    alignItems: 'center',
-    justifyContent: 'center',
-    marginTop: 10,
-    marginBottom: 10,
-    backgroundColor: '#FF1493',
+    width: 130,
+    height: 130,
+    borderWidth: 4,
+    borderColor: '#FFFFFF',
   },
 
-  name: {
-    fontSize: 22,
+  headerText: {
+    fontSize: 30,
     color: '#FFFFFF',
     fontWeight: '600',
   },
   body: {
-    padding: 30,
-    backgroundColor: '#E6E6FA',
+    backgroundColor: '#fbfbf2',
     flex: 1,
   },
   box: {
-    padding: 5,
-    marginTop: 5,
+    padding: 15,
+    height: 200,
+    marginRight: 10,
+    marginLeft: 10,
+    marginTop: 10,
     marginBottom: 5,
+    borderRadius: 5,
+    alignItems: 'center',
     backgroundColor: '#FFFFFF',
+    borderColor: '#fff',
     flexDirection: 'row',
     shadowColor: 'black',
     shadowOpacity: 0.2,
@@ -158,10 +175,9 @@ const styles = StyleSheet.create({
     elevation: 2,
   },
   username: {
-    color: '#20B2AA',
-    fontSize: 22,
+    fontSize: 25,
     alignSelf: 'center',
-    marginLeft: 10,
+    fontFamily: 'Helvetica',
   },
 });
 

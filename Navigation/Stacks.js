@@ -7,6 +7,7 @@ import SingleFriend from '../Components/SingleFriend';
 import AddFriend from '../Components/AddFriend';
 import EditFriend from '../Components/EditFriend';
 import NewCommunication from '../Components/NewCommunication';
+import EditCommunication from '../Components/EditCommunication';
 import SingleCommunication from '../Components/SingleCommunication';
 import Calendar from '../Components/Calendar';
 import Profile from '../Components/Profile';
@@ -17,51 +18,24 @@ export const FriendsNavigator = props => {
   return (
     <Stack.Navigator
       screenOptions={{
+        headerShown: false,
         headerStyle: {
-          backgroundColor: '#9AC4F8',
+          backgroundColor: '#709775',
         },
         headerTintColor: 'white',
         headerBackTitle: 'Back',
       }}>
-      <Stack.Screen name="Friends List" component={FriendsList} />
+      <Stack.Screen
+        name="Friends List"
+        component={FriendsList}
+        options={{headerShown: false}}
+      />
       <Stack.Screen name="Friend" component={SingleFriend} />
       <Stack.Screen name="Communication" component={SingleCommunication} />
       <Stack.Screen name="Add Communication" component={NewCommunication} />
       <Stack.Screen name="Add Friend" component={AddFriend} />
       <Stack.Screen name="Edit Friend" component={EditFriend} />
-      {/* <Stack.Screen name="Friend" component={SingleFriendNavigator} /> */}
-    </Stack.Navigator>
-  );
-};
-
-export const SingleFriendNavigator = props => {
-  return (
-    <Stack.Navigator
-      screenOptions={{
-        headerShown: false,
-      }}>
-      <Stack.Screen name="Single Friend" component={SingleFriend} />
-      <Stack.Screen name="Communication" component={SingleCommunication} />
-      <Stack.Screen name="Add Communication" component={NewCommunication} />
-
-      {/* <Stack.Screen name="Edit Friend" component={EditFriend} /> */}
-    </Stack.Navigator>
-  );
-};
-
-export const SingleCommNavigator = props => {
-  return (
-    <Stack.Navigator
-      screenOptions={{
-        headerStyle: {
-          backgroundColor: '#9AC4F8',
-        },
-        headerTintColor: 'white',
-        headerBackTitle: 'Back',
-      }}>
-      <Stack.Screen name="Communication" component={SingleCommunication} />
-      <Stack.Screen name="Add Communication" component={NewCommunication} />
-      {/* <Stack.Screen name="Edit Communication" component={EditCommunication} /> */}
+      <Stack.Screen name="Edit Communication" component={EditCommunication} />
     </Stack.Navigator>
   );
 };
@@ -70,8 +44,9 @@ export const CalendarNavigator = props => {
   return (
     <Stack.Navigator
       screenOptions={{
+        headerShown: false,
         headerStyle: {
-          backgroundColor: '#9AC4F8',
+          backgroundColor: '#709775',
         },
         headerTintColor: 'white',
         headerBackTitle: 'Back',
@@ -85,8 +60,9 @@ export const ProfileNavigator = props => {
   return (
     <Stack.Navigator
       screenOptions={{
+        headerShown: false,
         headerStyle: {
-          backgroundColor: '#9AC4F8',
+          backgroundColor: '#709775',
         },
         headerTintColor: 'white',
         headerBackTitle: 'Back',

@@ -7,11 +7,13 @@ import {
   TextInput,
   TouchableOpacity,
   ScrollView,
+  SafeAreaView,
 } from 'react-native';
 import {connect} from 'react-redux';
 import {_createFriend} from '../Redux';
 import DatePicker from 'react-native-date-picker';
 import RNPickerSelect from 'react-native-picker-select';
+import AntDesign from 'react-native-vector-icons/AntDesign';
 
 const AddFriends = props => {
   // friend info
@@ -27,8 +29,7 @@ const AddFriends = props => {
   const [frequency, setFrequency] = useState('weekly');
   const [weekDay, setWeekDay] = useState(0);
   const [time, setTime] = useState(new Date(new Date().setHours(20, 0, 0, 0)));
-  // const [week, setWeek] = useState('');
-  // const [imageUrl, setImageUrl] = useState('');
+  const [imageUrl, setImageUrl] = useState('');
 
   const onSubmit = () => {
     props.createFriend(
@@ -47,45 +48,25 @@ const AddFriends = props => {
     props.navigation.navigate('Friends List');
   };
 
-  // const monthly = () => {
-  //   return (
-  //     <>
-  //       <Text>
-  //         Please optionally select which week in the month you would like to
-  //         contact your friend. The default week is the 1st week.
-  //       </Text>
-  //       <RNPickerSelect
-  //         placeholder={{label: 'Please select week of month', value: null}}
-  //         onValueChange={value => setWeek(value)}
-  //         style={pickerSelectStyles}
-  //         items={[
-  //           {label: '1st week of the month', value: 1},
-  //           {label: '2nd week of the month', value: 2},
-  //           {label: '3rd week of the month', value: 3},
-  //           {label: '4th week of the month', value: 4},
-  //         ]}
-  //       />
-  //     </>
-  //   );
-  // };
-
   return (
-    <View style={styles.container}>
+    <SafeAreaView style={styles.container}>
       <ScrollView contentContainerStyle={styles.cardcontainer}>
-        <View style={styles.inputView}>
-          <TextInput
-            style={styles.TextInput}
-            placeholder="Nickname (optional)"
-            placeholderTextColor="#003f5c"
-            onChangeText={nickname => setNickname(nickname)}
-          />
+        <View style={styles.header}>
+          <View style={styles.icon}>
+            <AntDesign.Button
+              name="back"
+              backgroundColor="#99c1b9"
+              style={styles.button}
+              onPress={() => props.navigation.navigate('Friends List')}
+            />
+          </View>
         </View>
 
         <View style={styles.inputView}>
           <TextInput
             style={styles.TextInput}
             placeholder="First Name"
-            placeholderTextColor="#003f5c"
+            placeholderTextColor="#52796f"
             onChangeText={firstName => setFirstName(firstName)}
           />
         </View>
@@ -94,63 +75,76 @@ const AddFriends = props => {
           <TextInput
             style={styles.TextInput}
             placeholder="Last Name"
-            placeholderTextColor="#003f5c"
+            placeholderTextColor="#52796f"
             onChangeText={lastName => setLastName(lastName)}
           />
         </View>
 
-        <Text>
-          Optionally, please provide a brief description of your friend. This is
-          a good place to write how the two of you met, or your friend's likes
-          and dislikes.
-        </Text>
+        <View style={styles.inputView}>
+          <TextInput
+            style={styles.TextInput}
+            placeholder="Nickname (optional)"
+            placeholderTextColor="#52796f"
+            onChangeText={nickname => setNickname(nickname)}
+          />
+        </View>
+
         <View style={styles.inputView}>
           <TextInput
             style={styles.TextInput}
             placeholder="Description (optional)"
-            placeholderTextColor="#003f5c"
+            placeholderTextColor="#52796f"
             onChangeText={description => setDescription(description)}
           />
         </View>
 
-        <Text>
-          Please select how frequently you would like to contact this friend. We
-          recommend contacting friends either weekly or bi-weekly to maintain
-          Rapport.
-        </Text>
+        <View style={styles.inputView}>
+          <TextInput
+            style={styles.TextInput}
+            placeholder="ImageUrl"
+            placeholderTextColor="#52796f"
+            value={imageUrl}
+            onChangeText={imageUrl => setImageUrl(imageUrl)}
+          />
+        </View>
 
-        <RNPickerSelect
-          placeholder={{label: 'Please select frequency', value: null}}
-          onValueChange={value => setFrequency(value)}
-          style={pickerSelectStyles}
-          items={[
-            {label: 'Daily', value: 'daily'},
-            {label: 'Weekly', value: 'weekly'},
-            {label: 'Bi-Weekly', value: 'bi-weekly'},
-            {label: 'Monthly', value: 'monthly'},
-          ]}
-        />
+        <View style={styles.inputView}>
+          <RNPickerSelect
+            placeholder={{
+              label: 'Contact frequency (weekly recommended)',
+              value: null,
+            }}
+            onValueChange={value => setFrequency(value)}
+            style={pickerSelectStyles}
+            items={[
+              {label: 'Daily', value: 'daily'},
+              {label: 'Weekly', value: 'weekly'},
+              {label: 'Bi-Weekly', value: 'bi-weekly'},
+              {label: 'Monthly', value: 'monthly'},
+            ]}
+          />
+        </View>
 
-        <Text>
-          Optionally, please select which day of the week you would like to
-          contact this friend. We recommend you choose a day of the week you
-          typically have more time. The default day is Sunday.
-        </Text>
-
-        <RNPickerSelect
-          placeholder={{label: 'Please select day of the week', value: null}}
-          onValueChange={value => setWeekDay(value)}
-          style={pickerSelectStyles}
-          items={[
-            {label: 'Monday', value: 1},
-            {label: 'Tuesday', value: 2},
-            {label: 'Wednesday', value: 3},
-            {label: 'Thursday', value: 4},
-            {label: 'Friday', value: 5},
-            {label: 'Saturday', value: 6},
-            {label: 'Sunday', value: 0},
-          ]}
-        />
+        <View style={styles.inputView}>
+          <RNPickerSelect
+            placeholder={{
+              label: 'Day of the week to contact',
+              value: null,
+              color: '#52796f',
+            }}
+            onValueChange={value => setWeekDay(value)}
+            style={pickerSelectStyles}
+            items={[
+              {label: 'Monday', value: 1},
+              {label: 'Tuesday', value: 2},
+              {label: 'Wednesday', value: 3},
+              {label: 'Thursday', value: 4},
+              {label: 'Friday', value: 5},
+              {label: 'Saturday', value: 6},
+              {label: 'Sunday', value: 0},
+            ]}
+          />
+        </View>
 
         <Text>
           Optionally, please select the time at which you would like to contact
@@ -180,10 +174,8 @@ const AddFriends = props => {
         <TouchableOpacity onPress={onSubmit} style={styles.loginBtn}>
           <Text style={styles.loginText}>ADD FRIEND</Text>
         </TouchableOpacity>
-
-        <Text>Cancel</Text>
       </ScrollView>
-    </View>
+    </SafeAreaView>
   );
 };
 
@@ -198,9 +190,34 @@ export default connect(null, mapDispatch)(AddFriends);
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#fff',
+    backgroundColor: '#FFFFFF',
+    alignItems: 'center',
     justifyContent: 'center',
     paddingTop: StatusBar.currentHeight,
+  },
+  header: {
+    backgroundColor: '#709775',
+    shadowColor: 'black',
+    shadowOpacity: 0.2,
+    padding: 5,
+    shadowOffset: {
+      height: 1,
+      width: -2,
+    },
+    elevation: 2,
+  },
+
+  icon: {
+    marginRight: 'auto',
+    flexDirection: 'row',
+    padding: 5,
+    shadowColor: 'black',
+    shadowOpacity: 0.2,
+    shadowOffset: {
+      height: 0.2,
+      width: -0.4,
+    },
+    elevation: 0.5,
   },
   cardcontainer: {
     overflow: 'hidden',
@@ -210,48 +227,44 @@ const styles = StyleSheet.create({
     backgroundColor: 'pink',
     marginHorizontal: 20,
   },
-  inputIOS: {
-    fontSize: 14,
-    paddingVertical: 10,
-    paddingHorizontal: 12,
-    borderWidth: 1,
-    borderColor: 'green',
-    borderRadius: 8,
-    color: 'black',
-    paddingRight: 30, // to ensure the text is never behind the icon
-  },
 
   image: {
     marginBottom: 40,
   },
 
   inputView: {
-    backgroundColor: '#FFC0CB',
-    borderRadius: 30,
+    backgroundColor: '#dde5b6',
     width: '100%',
     height: 45,
     marginBottom: 20,
-
-    // alignItems: 'center',
+    borderWidth: 0.3,
+    borderColor: 'gray',
+    borderRadius: 4,
   },
 
   TextInput: {
     height: 50,
+    fontSize: 16,
     flex: 1,
     padding: 10,
-    marginLeft: 20,
     alignItems: 'center',
   },
 
   loginBtn: {
-    width: '80%',
-    borderRadius: 25,
+    width: '100%',
+    borderRadius: 4,
     height: 50,
     alignItems: 'center',
     justifyContent: 'center',
+    margin: 'auto',
     marginTop: 10,
     marginBottom: 10,
-    backgroundColor: '#FF1493',
+    backgroundColor: '#709775',
+  },
+  loginText: {
+    color: 'white',
+    fontWeight: '700',
+    fontSize: 18,
   },
 
   forgot_button: {
@@ -263,12 +276,18 @@ const styles = StyleSheet.create({
 const pickerSelectStyles = StyleSheet.create({
   inputIOS: {
     fontSize: 16,
+    backgroundColor: '#dde5b6',
     paddingVertical: 12,
     paddingHorizontal: 10,
-    borderWidth: 1,
+    borderWidth: 0.3,
     borderColor: 'gray',
     borderRadius: 4,
     color: 'black',
+
     paddingRight: 30, // to ensure the text is never behind the icon
+  },
+  placeholder: {
+    color: '#52796f',
+    padding: 10,
   },
 });

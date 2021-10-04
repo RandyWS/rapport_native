@@ -74,18 +74,7 @@ const styles = StyleSheet.create({
     marginTop: 50,
   },
 
-  image: {
-    marginBottom: 40,
-  },
-
-  loginBtn: {
-    width: '80%',
-    borderRadius: 25,
-    height: 50,
-    alignItems: 'center',
-    justifyContent: 'center',
-    marginTop: 10,
-    marginBottom: 10,
-    backgroundColor: '#FF1493',
+  text: {
+    fontSize: 18,
   },
 });

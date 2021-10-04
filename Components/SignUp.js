@@ -80,7 +80,9 @@ const SignUp = props => {
         <Text style={styles.loginText}>SIGN UP</Text>
       </TouchableOpacity>
       <Text>Existing User?</Text>
-      <TouchableOpacity onPress={onSubmit} style={styles.loginBtn}>
+      <TouchableOpacity
+        onPress={() => props.navigation.navigate('Log In')}
+        style={styles.loginBtn}>
         <Text style={styles.loginText}>Log In!</Text>
       </TouchableOpacity>
     </View>
@@ -115,7 +117,7 @@ const styles = StyleSheet.create({
   },
 
   inputView: {
-    backgroundColor: '#FFC0CB',
+    backgroundColor: '#dde5b6',
     borderRadius: 30,
     width: '70%',
     height: 45,
@@ -140,7 +142,12 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     marginTop: 10,
     marginBottom: 10,
-    backgroundColor: '#FF1493',
+    backgroundColor: '#709775',
+  },
+  loginText: {
+    color: 'white',
+    fontWeight: '700',
+    fontSize: 18,
   },
 
   forgot_button: {

@@ -29,7 +29,9 @@ router.get('/', authRequired, async (req, res, next) => {
       const comm = await Communication.findAll({
         where: {
           userId: req.userId,
-          is_recurring: false,
+        },
+        include: {
+          model: Friend,
         },
       });
 
@@ -100,7 +102,7 @@ router.post('/recurring/:friendId', authRequired, async (req, res, next) => {
       }
 
       let recurringEvents = [];
-=
+
       for (
         let i = moment(firstDay);
         i.isBefore(lastDay);
@@ -110,7 +112,7 @@ router.post('/recurring/:friendId', authRequired, async (req, res, next) => {
           userId: req.userId,
           friendId: req.params.friendId,
           is_recurring: true,
-          title: `contact ${req.body.friend}`,
+          title: `${req.body.friend}`,
           type: 'future',
           start: i.clone(),
           end: i.clone().add(1, 'hours'),
@@ -129,47 +131,6 @@ router.post('/recurring/:friendId', authRequired, async (req, res, next) => {
           return comm;
         }),
       );
-
-      // const newCommunication = await Communication.create({
-      //   userId: req.userId,
-      //   friendId: req.params.friendId,
-      //   is_recurring: true,
-      //   title: `contact ${req.body.friend}`,
-      //   type: 'future',
-      //   start: startDate,
-      //   end: endDate,
-      // });
-
-      // let recurringType = req.body.frequency;
-      // let separation_count = 0;
-      // if (recurringType === 'daily') {
-      //   recurringType = 1;
-      // } else if (recurringType === 'weekly') {
-      //   recurringType = 2;
-      // } else if (recurringType === 'bi-weekly') {
-      //   recurringType = 2;
-      //   separation_count = 1;
-      // } else {
-      //   recurringType = 3;
-      // }
-
-      // let recurring;
-      // if (req.body.week) {
-      //   recurring = await Recurring_Pattern.create({
-      //     commId: newComm[0].id,
-      //     recurring_type_id: recurringType,
-      //     separation_count,
-      //     day_of_week: req.body.weekDay,
-      //     week_of_month: req.body.week,
-      //   });
-      // } else {
-      //   recurring = await Recurring_Pattern.create({
-      //     commId: newComm[0].id,
-      //     recurring_type_id: recurringType,
-      //     separation_count,
-      //     day_of_week: req.body.weekDay,
-      //   });
-      // }
 
       res.status(200).send({
         newComm,

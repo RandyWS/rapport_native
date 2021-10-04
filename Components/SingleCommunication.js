@@ -6,12 +6,19 @@ import {
   View,
   Image,
   TouchableOpacity,
-  FlatList,
+  ScrollView,
+  SafeAreaView,
 } from 'react-native';
 import {connect} from 'react-redux';
 import {Modal} from '../services/Modal';
 import {Button} from '../services/Button';
 import {_fetchSingleComm, resetSingleComm, _deleteComm} from '../Redux';
+import Feather from 'react-native-vector-icons/Feather';
+import AntDesign from 'react-native-vector-icons/AntDesign';
+import Entypo from 'react-native-vector-icons/Entypo';
+import SimpleLineIcons from 'react-native-vector-icons/SimpleLineIcons';
+import Ionicons from 'react-native-vector-icons/Ionicons';
+import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
 
 class SingleCommunication extends Component {
   constructor(props) {
@@ -22,6 +29,7 @@ class SingleCommunication extends Component {
     };
     this.deleteComm = this.deleteComm.bind(this);
     this.displayModal = this.displayModal.bind(this);
+    this.returnIcon = this.returnIcon.bind(this);
   }
 
   componentDidMount() {
@@ -30,6 +38,7 @@ class SingleCommunication extends Component {
 
   componentDidUpdate(prevProps) {
     if (prevProps.singleComm !== this.props.singleComm) {
+      console.log('start end', this.props.singleComm);
       this.setState({communication: this.props.singleComm});
     }
   }
@@ -50,36 +59,92 @@ class SingleCommunication extends Component {
     });
   }
 
+  returnIcon(type) {
+    if (type === 'phone-call') {
+      return <Feather name="phone-call" size={30} />;
+    } else if (type === 'text') {
+      return <Feather name="message-square" size={30} />;
+    } else if (type === 'in-person') {
+    } else if (type === 'future') {
+      return <Feather name="fast-forward" size={30} />;
+    } else if (type === 'other') {
+      return <Feather name="more-horizontal" size={30} />;
+    } else if (type === 'letter') {
+      return <SimpleLineIcons name="envelope-letter" size={30} />;
+    } else if (type === 'email') {
+      return <Entypo name="email" size={30} />;
+    } else if (type === 'social-media') {
+      return <SimpleLineIcons name="social-instagram" size={30} />;
+    }
+  }
+
   render() {
     const {communication, isModalVisible} = this.state;
 
     return (
-      <View style={styles.container}>
-        <View style={styles.header}>
-          <View style={styles.headerContent}>
-            <Text style={styles.name}>Date: {communication.start}</Text>
-            <Text style={styles.name}>Title: {communication.title}</Text>
-            <Text style={styles.name}>Content: {communication.content}</Text>
-            <TouchableOpacity
-              onPress={this.displayModal}
-              style={styles.loginBtn}>
-              <Text style={styles.loginText}>Delete Communication</Text>
-            </TouchableOpacity>
+      <SafeAreaView style={styles.container}>
+        <ScrollView contentContainerStyle={styles.cardcontainer}>
+          <View style={styles.header}>
+            <View style={styles.icon}>
+              <AntDesign.Button
+                name="back"
+                backgroundColor="#99c1b9"
+                style={styles.button}
+                onPress={() =>
+                  this.props.navigation.navigate('Friend', {
+                    friendId: this.state.communication.friendId,
+                  })
+                }
+              />
+
+              <AntDesign.Button
+                name="edit"
+                backgroundColor="#99c1b9"
+                style={styles.button}
+                onPress={() =>
+                  this.props.navigation.navigate('Edit Communication', {
+                    commId: this.state.communication.id,
+                  })
+                }
+              />
+
+              <AntDesign.Button
+                name="delete"
+                backgroundColor="#99c1b9"
+                style={styles.button}
+                onPress={this.displayModal}
+              />
+            </View>
           </View>
-        </View>
-        <Modal isVisible={isModalVisible}>
-          <Modal.Container>
-            <Modal.Header title="Are you sure you want to delete this friend?" />
-            <Modal.Body>
-              <Text style={styles.text}>This action cannot be undone</Text>
-            </Modal.Body>
-            <Modal.Footer>
-              <Button title="Delete Communication" onPress={this.deleteComm} />
-              <Button title="Cancel" onPress={this.displayModal} />
-            </Modal.Footer>
-          </Modal.Container>
-        </Modal>
-      </View>
+
+          <View style={styles.body}>
+            <View style={styles.friend}>
+              <Text style={styles.date}>{communication.start}</Text>
+              <Text style={styles.label}>Title:</Text>
+              <Text style={styles.headerText}>{communication.title}</Text>
+              {communication.content ? (
+                <>
+                  <Text style={styles.label}>Content:</Text>
+                  <Text style={styles.headerText}>{communication.content}</Text>
+                </>
+              ) : null}
+            </View>
+          </View>
+
+          <Modal isVisible={isModalVisible}>
+            <Modal.Container>
+              <Modal.Header title="Are you sure you want to delete this friend?" />
+              <Modal.Body>
+                <Text style={styles.text}>This action cannot be undone</Text>
+              </Modal.Body>
+              <Modal.Footer>
+                <Button title="Delete" onPress={this.deleteComm} />
+                <Button title="Cancel" onPress={this.displayModal} />
+              </Modal.Footer>
+            </Modal.Container>
+          </Modal>
+        </ScrollView>
+      </SafeAreaView>
     );
   }
 }
@@ -102,53 +167,46 @@ const styles = StyleSheet.create({
   cardcontainer: {
     overflow: 'hidden',
     borderWidth: 0,
+    justifyContent: 'center',
   },
   container: {
     flex: 1,
+    justifyContent: 'center',
   },
   header: {
-    backgroundColor: '#20B2AA',
+    backgroundColor: '#709775',
+    shadowColor: 'black',
+    shadowOpacity: 0.2,
+    padding: 5,
+    shadowOffset: {
+      height: 1,
+      width: -2,
+    },
+    elevation: 2,
   },
-  headerContent: {
-    padding: 30,
+
+  icon: {
+    marginLeft: 'auto',
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    padding: 5,
+    shadowColor: 'black',
+    shadowOpacity: 0.2,
+    shadowOffset: {
+      height: 0.2,
+      width: -0.4,
+    },
+    elevation: 0.5,
   },
-  loginBtn: {
-    width: '80%',
-    borderRadius: 25,
-    height: 50,
-    alignItems: 'center',
-    justifyContent: 'center',
+  friend: {
+    padding: 20,
+    marginRight: 10,
+    marginLeft: 10,
     marginTop: 10,
     marginBottom: 10,
-    backgroundColor: '#FF1493',
-  },
-  avatar: {
-    width: 130,
-    height: 130,
-
-    borderWidth: 4,
-    borderColor: '#FFFFFF',
-    marginBottom: 10,
-  },
-  image: {
-    width: 60,
-    height: 60,
-  },
-  name: {
-    fontSize: 22,
-    color: '#FFFFFF',
-    fontWeight: '600',
-  },
-  body: {
-    padding: 30,
-    backgroundColor: '#E6E6FA',
-    flex: 1,
-  },
-  box: {
-    padding: 5,
-    marginTop: 5,
-    marginBottom: 5,
+    borderRadius: 10,
     backgroundColor: '#FFFFFF',
+    borderColor: '#fff',
     flexDirection: 'column',
     shadowColor: 'black',
     shadowOpacity: 0.2,
@@ -158,10 +216,45 @@ const styles = StyleSheet.create({
     },
     elevation: 2,
   },
-  username: {
-    color: '#20B2AA',
-    fontSize: 22,
-    marginLeft: 10,
+
+  friendInfo: {
+    flexDirection: 'column',
+    justifyContent: 'space-evenly',
+    marginLeft: 15,
+    padding: 5,
+  },
+
+  body: {
+    margin: 'auto',
+    justifyContent: 'center',
+  },
+  headerText: {
+    fontSize: 25,
+    marginTop: 5,
+    marginBottom: 10,
+    fontFamily: 'Helvetica',
+  },
+  label: {
+    fontSize: 20,
+    marginTop: 10,
+    marginBottom: 5,
+    alignSelf: 'center',
+    fontFamily: 'Helvetica',
+    textAlign: 'left',
+    marginRight: 'auto',
+  },
+  date: {
+    fontSize: 18,
+    marginTop: 10,
+    marginBottom: 10,
+    alignSelf: 'center',
+    fontFamily: 'Helvetica',
+    textAlign: 'left',
+    color: '#90a955',
+    marginRight: 'auto',
+  },
+  text: {
+    fontSize: 18,
   },
 });
 

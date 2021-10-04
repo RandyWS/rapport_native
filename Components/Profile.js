@@ -4,6 +4,7 @@ import {
   StyleSheet,
   Text,
   View,
+  SafeAreaView,
   Image,
   TouchableOpacity,
   FlatList,
@@ -37,7 +38,7 @@ class Profile extends Component {
     const {user, friends} = this.state;
 
     return (
-      <View style={styles.container}>
+      <SafeAreaView style={styles.container}>
         <View style={styles.header}>
           <View style={styles.headerContent}>
             <Image
@@ -51,7 +52,7 @@ class Profile extends Component {
             </Text>
           </View>
         </View>
-      </View>
+      </SafeAreaView>
     );
   }
 }
@@ -78,7 +79,14 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   header: {
-    backgroundColor: '#20B2AA',
+    backgroundColor: '#709775',
+    shadowColor: 'black',
+    shadowOpacity: 0.2,
+    shadowOffset: {
+      height: 1,
+      width: -2,
+    },
+    elevation: 2,
   },
   headerContent: {
     padding: 30,

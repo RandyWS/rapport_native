@@ -47,6 +47,7 @@ export const _fetchComm = () => {
             let end = new Date(comm.end);
             comm.start = start;
             comm.end = end;
+            comm.imageUrl = comm.friend.imageUrl;
             return comm;
           });
           dispatch(setComm(communications));
@@ -58,9 +59,10 @@ export const _fetchComm = () => {
   };
 };
 
-export const _createRecurringComm = (comm, friendId) => {
+export const _createRecurringComm = (comm, friendId, imageUrl) => {
   return async dispatch => {
     try {
+      console.log(imageUrl);
       const token = await deviceState.getJWT();
 
       if (token) {
@@ -80,6 +82,7 @@ export const _createRecurringComm = (comm, friendId) => {
             let end = new Date(comm.end);
             comm.start = start;
             comm.end = end;
+            comm.imageUrl = imageUrl;
             return comm;
           });
           dispatch(addComm(recurringComm));

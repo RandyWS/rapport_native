@@ -1,6 +1,8 @@
 import axios from 'axios';
 import {setSingleFriend} from './singleFriend';
 import deviceState from '../services/deviceState';
+import {addComm} from './comm';
+import moment from 'moment';
 
 const SET_SINGLE_COMM = 'SET_SINGLE_COMM';
 const RESET_SINGLE_COMM = 'RESET_SINGLE_COMM';
@@ -45,6 +47,7 @@ export const _fetchSingleComm = commId => {
 export const _createComm = comm => {
   return async dispatch => {
     try {
+      console.log(comm);
       const token = await deviceState.getJWT();
 
       if (token) {
@@ -60,6 +63,7 @@ export const _createComm = comm => {
 
         if (data.newCommunication) {
           dispatch(setSingleComm(data.newCommunication));
+          dispatch(addComm(data.newCommunication));
         }
       }
     } catch (error) {
@@ -83,12 +87,6 @@ export const _deleteComm = commId => {
             },
           },
         );
-        console.log(data);
-
-        // if (data) {
-        //   dispatch(deleteFriend(friendId));
-        //   dispatch(resetSingleFriend());
-        // }
       }
     } catch (error) {
       console.log(error);

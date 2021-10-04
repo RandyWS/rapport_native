@@ -88,6 +88,7 @@ export const _createFriend = (newFriend, comm) => {
             _createRecurringComm(
               {friend: friendName, ...comm},
               data.newFriend.id,
+              data.newFriend.imageUrl,
             ),
           );
         }
